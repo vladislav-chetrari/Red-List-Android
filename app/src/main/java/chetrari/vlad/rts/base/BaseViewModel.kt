@@ -28,12 +28,13 @@ abstract class BaseViewModel : ViewModel() {
         block: suspend () -> T
     ) = launchBackgroundTask(Dispatchers.Default, mutableLiveData, block)
 
+    //TODO remove
     private fun <T> launchBackgroundTask(
         dispatcher: CoroutineDispatcher,
         mutableLiveData: MutableLiveData<Event<T>>,
         block: suspend () -> T
     ) {
-        mutableLiveData.postValue(Event.Progress())
+        mutableLiveData.postValue(Event.Progress)
         viewModelScope.launch {
             try {
                 val result = withContext(dispatcher) { block() }

@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
 
-//TODO move to coroutines instead of liveData output
-abstract class UseCase<Input, Output> {
+abstract class UseCase<in Input, Output> {
 
     protected open val dispatcher: CoroutineDispatcher = Dispatchers.Main
 
-    private val liveData = MutableLiveData<Event<Output>>()
+    protected open val liveData = MutableLiveData<Event<Output>>()
 
-    protected abstract suspend fun run(input: Input): Output
+    @Throws(RuntimeException::class)
+    protected abstract suspend fun execute(input: Input)
 
     operator fun invoke(scope: CoroutineScope, input: Input): LiveData<Event<Output>> {
         scope.launch { invoke(input) }
@@ -19,12 +19,19 @@ abstract class UseCase<Input, Output> {
     }
 
     suspend operator fun invoke(input: Input) = liveData.run {
-        postValue(Event.Progress())
-        try {
-            val result = withContext(dispatcher) { run(input) }
-            postValue(Event.Success(result))
-        } catch (t: Throwable) {
-            postValue(Event.Error(t))
+        progress()
+        withContext(dispatcher) {
+            try {
+                execute(input)
+            } catch (t: Throwable) {
+                postValue(Event.Error(t))
+            }
         }
     }
+
+    protected fun update(output: Output) = liveData.postValue(Event.Success(output))
+
+    protected fun progress() = liveData.postValue(Event.Progress)
 }
+
+operator fun <R> UseCase<Unit, R>.invoke(scope: CoroutineScope): LiveData<Event<R>> = this(scope, Unit)

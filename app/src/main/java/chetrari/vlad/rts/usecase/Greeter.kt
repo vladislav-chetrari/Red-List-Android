@@ -10,15 +10,17 @@ import javax.inject.Singleton
 @Singleton
 class Greeter @Inject constructor(
     private val resources: Resources
-) : UseCase<Nothing, String>() {
+) : UseCase<Unit, String>() {
 
-    private var currentIndex = -1
+    private var currentIndex = 0
     private val persons = listOf("Alice", "Vlad")
 
-    override suspend fun run(input: Nothing): String {
+    override suspend fun execute(input: Unit) = repeat(100) {
+        progress()
         delay(1000L)
-        return resources.getString(R.string.greeting_message, persons[currentIndex % persons.size]).also {
-            currentIndex += 1
-        }
+        val output = resources.getString(R.string.greeting_message, persons[currentIndex % persons.size])
+        currentIndex += 1
+        update(output)
+        delay(1000L)
     }
 }
