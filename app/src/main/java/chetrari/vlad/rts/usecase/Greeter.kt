@@ -2,7 +2,7 @@ package chetrari.vlad.rts.usecase
 
 import android.content.res.Resources
 import chetrari.vlad.rts.R
-import chetrari.vlad.rts.base.UseCase
+import chetrari.vlad.rts.base.MultiEventUseCase
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class Greeter @Inject constructor(
     private val resources: Resources
-) : UseCase<Unit, String>() {
+) : MultiEventUseCase<Unit, String>() {
 
     private var currentIndex = 0
     private val persons = listOf("Alice", "Vlad")

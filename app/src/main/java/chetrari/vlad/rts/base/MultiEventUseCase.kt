@@ -2,11 +2,14 @@ package chetrari.vlad.rts.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-abstract class UseCase<in Input, Output> {
+abstract class MultiEventUseCase<in Input, Output> {
 
-    protected open val dispatcher: CoroutineDispatcher = Dispatchers.Main
+    protected open val dispatcher: CoroutineDispatcher = Dispatcher.Main
 
     protected open val liveData = MutableLiveData<Event<Output>>()
 
@@ -34,4 +37,4 @@ abstract class UseCase<in Input, Output> {
     protected fun progress() = liveData.postValue(Event.Progress)
 }
 
-operator fun <R> UseCase<Unit, R>.invoke(scope: CoroutineScope): LiveData<Event<R>> = this(scope, Unit)
+operator fun <R> MultiEventUseCase<Unit, R>.invoke(scope: CoroutineScope): LiveData<Event<R>> = this(scope, Unit)
