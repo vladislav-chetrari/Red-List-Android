@@ -3,13 +3,13 @@ package chetrari.vlad.rts.app.main.countries
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import chetrari.vlad.rts.R
 import chetrari.vlad.rts.data.network.model.Country
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.list_item_country.*
 
 class CountriesAdapter : ListAdapter<Country, CountriesAdapter.ViewHolder>(ItemCallback()) {
 
@@ -24,7 +24,7 @@ class CountriesAdapter : ListAdapter<Country, CountriesAdapter.ViewHolder>(ItemC
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         fun bind(country: Country) {
-            containerView.findViewById<TextView>(R.id.name).text = country.name
+            name.text = country.name
         }
     }
 
