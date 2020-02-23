@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+//TODO refactor use case to use it as many times as I want (single or multiple)
 abstract class SingleEventUseCase<in Input, Output> {
 
     protected open val dispatcher: CoroutineDispatcher = Dispatcher.Main

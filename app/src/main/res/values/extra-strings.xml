@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="red_list_api_base_url">https://apiv3.iucnredlist.org/api/v3/</string>
+    <!--TODO replace with non test api token-->
+    <string name="red_list_api_token">9bb4facb6d23f48efbf424bb05c0c1ef1cf6f468393bc745d42179ac4aca5fee</string>
+</resources>

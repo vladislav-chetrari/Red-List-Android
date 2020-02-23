@@ -1,4 +1,4 @@
-package chetrari.vlad.rts
+package chetrari.vlad.rts.app
 
 import android.app.Application
 import chetrari.vlad.rts.di.DaggerAppComponent

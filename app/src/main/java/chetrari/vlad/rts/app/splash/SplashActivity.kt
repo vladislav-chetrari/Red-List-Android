@@ -1,15 +1,15 @@
-package chetrari.vlad.rts.splash
+package chetrari.vlad.rts.app.splash
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import chetrari.vlad.rts.hello.HelloActivity
+import chetrari.vlad.rts.app.main.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivity(Intent(this, HelloActivity::class.java))
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 }

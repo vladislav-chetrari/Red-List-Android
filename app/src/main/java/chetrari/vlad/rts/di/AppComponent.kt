@@ -1,9 +1,7 @@
 package chetrari.vlad.rts.di
 
-import chetrari.vlad.rts.App
-import chetrari.vlad.rts.di.module.ActivityModule
-import chetrari.vlad.rts.di.module.AppModule
-import chetrari.vlad.rts.di.module.ViewModelModule
+import chetrari.vlad.rts.app.App
+import chetrari.vlad.rts.di.module.*
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -16,12 +14,9 @@ import javax.inject.Singleton
         AndroidInjectionModule::class,
         AppModule::class,
         ViewModelModule::class,
-        ActivityModule::class/*,
+        ActivityModule::class,
         FragmentModule::class,
-        PersistenceModule::class,
-        UiModule::class,
-        NetworkModule::class,
-        NetworkClientModule::class*/]
+        NetworkModule::class]
 )
 interface AppComponent : AndroidInjector<App> {
 

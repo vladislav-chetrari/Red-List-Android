@@ -21,4 +21,7 @@ annotation class FragmentScoped
 annotation class ViewModelKey(val value: KClass<out ViewModel>)
 
 @Qualifier
-annotation class BaseUrl
+annotation class RedListBaseUrl
+
+@Qualifier
+annotation class RedListToken
