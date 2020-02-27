@@ -1,12 +1,12 @@
 package chetrari.vlad.rts.data.domain
 
 import chetrari.vlad.rts.base.Dispatcher
-import chetrari.vlad.rts.base.SingleEventUseCase
+import chetrari.vlad.rts.base.UseCase
 import retrofit2.Call
 
-abstract class FetcherUseCase<in Input, Output> : SingleEventUseCase<Input, Output>() {
+abstract class FetcherUseCase<in Input, Output> : UseCase<Input, Output>() {
 
-    override val dispatcher = Dispatcher.IO
+    final override val dispatcher = Dispatcher.IO
 
     protected val <T> Call<T>.body: T
         get() {

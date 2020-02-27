@@ -73,4 +73,6 @@ abstract class BaseFragment(
             is Event.Success -> consumer(it.result)
         }
     })
+
+    protected fun <T> LiveData<T>.observe(consumer: (T) -> Unit) = observe(viewLifecycleOwner, Observer { consumer(it) })
 }

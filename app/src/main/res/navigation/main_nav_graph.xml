@@ -9,5 +9,17 @@
         android:id="@+id/destinationCountries"
         android:name="chetrari.vlad.rts.app.main.countries.CountriesFragment"
         android:label="CountriesFragment"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_destinationCountries_to_speciesByCountryFragment"
+            app:destination="@id/speciesByCountryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/speciesByCountryFragment"
+        android:name="chetrari.vlad.rts.app.main.countries.species.SpeciesByCountryFragment"
+        android:label="SpeciesByCountryFragment">
+        <argument
+            android:name="species"
+            app:argType="chetrari.vlad.rts.data.network.model.Species[]" />
+    </fragment>
 </navigation>
