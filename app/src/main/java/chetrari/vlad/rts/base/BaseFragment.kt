@@ -65,12 +65,19 @@ abstract class BaseFragment(
     protected fun <T> LiveData<Event<T>>.observe(
         onProgress: () -> Unit = {},
         onError: (Throwable) -> Unit = {},
+        onComplete: () -> Unit = {},
         consumer: (T) -> Unit
     ) = observe(viewLifecycleOwner, Observer {
         when (it) {
             is Event.Progress -> onProgress()
-            is Event.Error -> onError(it.error)
-            is Event.Success -> consumer(it.result)
+            is Event.Error -> {
+                onError(it.error)
+                onComplete()
+            }
+            is Event.Success -> {
+                consumer(it.result)
+                onComplete()
+            }
         }
     })
 

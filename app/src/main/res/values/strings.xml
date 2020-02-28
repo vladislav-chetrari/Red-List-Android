@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Red Threatened Species</string>
+    <string name="app_name">Red List of Threatened Species</string>
 
-    <string name="greeting_message">Hello, %s!</string>
     <string name="countries">Countries</string>
+    <string name="message_error">Oops!\nSomething went wrong!</string>
+    <string name="retry">Retry</string>
 </resources>

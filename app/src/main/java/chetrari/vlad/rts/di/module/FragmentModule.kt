@@ -1,7 +1,7 @@
 package chetrari.vlad.rts.di.module
 
 import chetrari.vlad.rts.app.main.countries.CountriesFragment
-import chetrari.vlad.rts.app.main.countries.species.SpeciesByCountryFragment
+import chetrari.vlad.rts.app.main.species.SpeciesListFragment
 import chetrari.vlad.rts.di.FragmentScoped
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -15,5 +15,5 @@ abstract class FragmentModule {
 
     @FragmentScoped
     @ContributesAndroidInjector
-    abstract fun speciesByCountryFragment(): SpeciesByCountryFragment
+    abstract fun speciesListFragment(): SpeciesListFragment
 }

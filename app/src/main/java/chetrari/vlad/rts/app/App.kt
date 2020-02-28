@@ -10,7 +10,7 @@ import javax.inject.Inject
 class App : Application(), HasAndroidInjector {
 
     @Inject
-    lateinit var injector: DispatchingAndroidInjector<Any>
+    internal lateinit var injector: DispatchingAndroidInjector<Any>
 
     override fun androidInjector() = injector
 

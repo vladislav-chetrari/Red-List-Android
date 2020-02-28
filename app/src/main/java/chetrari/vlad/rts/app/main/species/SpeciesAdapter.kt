@@ -1,4 +1,4 @@
-package chetrari.vlad.rts.app.main.countries.species
+package chetrari.vlad.rts.app.main.species
 
 import android.view.LayoutInflater
 import android.view.View

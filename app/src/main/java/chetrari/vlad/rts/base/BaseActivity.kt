@@ -17,9 +17,9 @@ abstract class BaseActivity(
 ) : AppCompatActivity(layoutResId), HasAndroidInjector {
 
     @Inject
-    /*TODO try internal */lateinit var factory: ViewModelProvider.Factory
+    lateinit var factory: ViewModelProvider.Factory
     @Inject
-    /*internal */lateinit var injector: DispatchingAndroidInjector<Any>
+    lateinit var injector: DispatchingAndroidInjector<Any>
 
     override fun androidInjector() = injector
 

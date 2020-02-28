@@ -8,5 +8,5 @@ class CountryListFetcher @Inject constructor(
     private val api: RedListApi
 ) : FetcherUseCase<Unit, List<Country>>() {
 
-    override suspend fun execute(input: Unit) = api.countries().body.results
+    override suspend fun execute(input: Unit) = api.countries().body.results.sortedBy(Country::name)
 }

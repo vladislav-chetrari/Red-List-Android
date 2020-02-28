@@ -8,18 +8,21 @@
     <fragment
         android:id="@+id/destinationCountries"
         android:name="chetrari.vlad.rts.app.main.countries.CountriesFragment"
-        android:label="CountriesFragment"
+        android:label="Countries"
         tools:layout="@layout/fragment_list">
         <action
-            android:id="@+id/action_destinationCountries_to_speciesByCountryFragment"
-            app:destination="@id/speciesByCountryFragment" />
+            android:id="@+id/action_destinationCountries_to_speciesListFragment"
+            app:destination="@id/speciesListFragment"></action>
     </fragment>
     <fragment
-        android:id="@+id/speciesByCountryFragment"
-        android:name="chetrari.vlad.rts.app.main.countries.species.SpeciesByCountryFragment"
-        android:label="SpeciesByCountryFragment">
+        android:id="@+id/speciesListFragment"
+        android:name="chetrari.vlad.rts.app.main.species.SpeciesListFragment"
+        android:label="Species list"
+        tools:layout="@layout/fragment_list">
         <argument
-            android:name="species"
-            app:argType="chetrari.vlad.rts.data.network.model.Species[]" />
+            android:name="country"
+            android:defaultValue="@null"
+            app:argType="chetrari.vlad.rts.data.network.model.Country"
+            app:nullable="true" />
     </fragment>
 </navigation>
