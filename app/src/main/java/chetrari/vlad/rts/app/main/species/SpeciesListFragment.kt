@@ -18,7 +18,8 @@ class SpeciesListFragment : BaseFragment(R.layout.fragment_list) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as MainActivity).setSupportActionBar(toolbar)
         list.adapter = adapter
-        args.country?.let(viewModel::onSearchByCountry)
+        refreshLayout.setOnRefreshListener(::onRefresh)
+        onRefresh()
     }
 
     override fun observeLiveData() = viewModel.species.observe(
@@ -26,4 +27,8 @@ class SpeciesListFragment : BaseFragment(R.layout.fragment_list) {
         onComplete = { refreshLayout.isRefreshing = false },
         consumer = adapter::submitList
     )
+
+    private fun onRefresh() {
+        args.country?.let(viewModel::onSearchByCountry)
+    }
 }
