@@ -43,4 +43,9 @@ abstract class BaseViewModel : ViewModel() {
             value = null
         })
     }
+
+    protected fun <T> MediatorLiveData<Event<T>>.addSource(source: LiveData<Event<T>>) = addSource(source) {
+        postValue(it)
+        if (it is Event.Success || it is Event.Error) removeSource(source)
+    }
 }

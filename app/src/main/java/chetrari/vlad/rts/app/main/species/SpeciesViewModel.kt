@@ -16,9 +16,7 @@ class SpeciesViewModel @Inject constructor(
 
     val species = mediatorLiveData<Event<List<Species>>>()
 
-    fun onSearchByCountry(country: Country) = species.mediator.run {
-        addSource(speciesByCountryFetcher(viewModelScope, country), ::postValue)
-    }
+    fun onSearchByCountry(country: Country) = species.mediator.addSource(speciesByCountryFetcher(viewModelScope, country))
 
     fun onLoadSpeciesImages(species: Species) = speciesImageLinkUpdater(viewModelScope, species)
 }
