@@ -8,9 +8,16 @@ abstract class BaseViewModel : ViewModel() {
     protected val <T> LiveData<T>.mutable: MutableLiveData<T>
         get() = this as MutableLiveData
 
-    protected fun <T> liveData(initialValue: T? = null): LiveData<T> =
+    protected val <T> LiveData<T>.mediator: MediatorLiveData<T>
+        get() = this as MediatorLiveData
+
+    protected fun <T> mutableLiveData(initialValue: T? = null): LiveData<T> =
         if (initialValue == null) MutableLiveData<T>()
         else MutableLiveData(initialValue)
+
+    protected fun <T> mediatorLiveData(initialValue: T? = null): LiveData<T> =
+        if (initialValue == null) MediatorLiveData<T>()
+        else MediatorLiveData<T>().apply { value = initialValue }
 
     protected fun <T> actionLiveData(): LiveData<T> = object : MutableLiveData<T>() {
         @MainThread

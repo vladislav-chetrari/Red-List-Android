@@ -8,15 +8,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 abstract class UseCase<in Input, Output> {
+
     protected open val dispatcher: CoroutineDispatcher = Dispatcher.Main
-    val liveData: LiveData<Event<Output>> = MutableLiveData()
 
     @Throws(RuntimeException::class)
     abstract suspend fun execute(input: Input): Output
 
-    operator fun invoke(scope: CoroutineScope, input: Input) = liveData.also {
+    operator fun invoke(scope: CoroutineScope, input: Input): LiveData<Event<Output>> = MutableLiveData<Event<Output>>().also {
         scope.launch {
-            (liveData as MutableLiveData).run {
+            it.run {
                 postValue(Event.Progress)
                 try {
                     val result = withContext(dispatcher) { execute(input) }

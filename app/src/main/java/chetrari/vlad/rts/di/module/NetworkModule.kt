@@ -2,10 +2,11 @@ package chetrari.vlad.rts.di.module
 
 import android.content.res.Resources
 import chetrari.vlad.rts.R
-import chetrari.vlad.rts.data.network.RedListApi
-import chetrari.vlad.rts.data.network.RedListInterceptor
-import chetrari.vlad.rts.di.RedListBaseUrl
-import chetrari.vlad.rts.di.RedListToken
+import chetrari.vlad.rts.data.network.api.RedListApi
+import chetrari.vlad.rts.data.network.api.WikiMediaApi
+import chetrari.vlad.rts.data.network.interceptor.RedListInterceptor
+import chetrari.vlad.rts.di.RedList
+import chetrari.vlad.rts.di.WikiMedia
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -20,16 +21,6 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    @RedListBaseUrl
-    fun baseUrl(res: Resources): String = res.getString(R.string.red_list_api_base_url)
-
-    @Provides
-    @Singleton
-    @RedListToken
-    fun redListToken(res: Resources): String = res.getString(R.string.red_list_api_token)
-
-    @Provides
-    @Singleton
     fun gsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
 
     @Provides
@@ -38,32 +29,65 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun redListInterceptor(@RedListToken token: String) = RedListInterceptor(token)
+    fun redListInterceptor(res: Resources) = RedListInterceptor(res.getString(R.string.red_list_api_token))
 
     @Provides
     @Singleton
-    fun okHttpClient(loggingInterceptor: HttpLoggingInterceptor, redListInterceptor: RedListInterceptor): OkHttpClient =
-        OkHttpClient.Builder()
-            .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
-            .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
-            .addInterceptor(loggingInterceptor)
-            .addInterceptor(redListInterceptor)
-            .build()
+    @RedList
+    fun redListHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        redListInterceptor: RedListInterceptor
+    ): OkHttpClient = OkHttpClient.Builder()
+        .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
+        .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
+        .addInterceptor(loggingInterceptor)
+        .addInterceptor(redListInterceptor)
+        .build()
 
     @Provides
     @Singleton
-    fun retrofit(@RedListBaseUrl baseUrl: String, factory: GsonConverterFactory, client: OkHttpClient): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(client)
-            .addConverterFactory(factory)
-            .build()
+    @WikiMedia
+    fun wikiMediaHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient = OkHttpClient.Builder()
+        .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
+        .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
+        .addInterceptor(loggingInterceptor)
+        .build()
 
     @Provides
     @Singleton
-    fun redListApi(retrofit: Retrofit): RedListApi = retrofit.create(RedListApi::class.java)
+    @RedList
+    fun retrofit(
+        res: Resources,
+        @RedList client: OkHttpClient,
+        factory: GsonConverterFactory
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(res.getString(R.string.red_list_api_base_url))
+        .client(client)
+        .addConverterFactory(factory)
+        .build()
+
+    @Provides
+    @Singleton
+    @WikiMedia
+    fun wikiMediaRetrofit(
+        res: Resources,
+        @WikiMedia client: OkHttpClient,
+        factory: GsonConverterFactory
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(res.getString(R.string.wiki_media_api_base_url))
+        .client(client)
+        .addConverterFactory(factory)
+        .build()
+
+    @Provides
+    @Singleton
+    fun redListApi(@RedList retrofit: Retrofit): RedListApi = retrofit.create(RedListApi::class.java)
+
+    @Provides
+    @Singleton
+    fun wikiMediaApi(@WikiMedia retrofit: Retrofit): WikiMediaApi = retrofit.create(WikiMediaApi::class.java)
 
     private companion object {
-        const val REQUEST_TIMEOUT = 90L
+        const val REQUEST_TIMEOUT = 30L
     }
 }

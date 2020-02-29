@@ -11,4 +11,7 @@ data class Species(
     @SerializedName("scientific_name")
     val name: String = "",
     val category: String = ""
-) : Parcelable
+) : Parcelable {
+    var thumbnailImageLink: String? = null
+    var fullImageLink: String? = null
+}

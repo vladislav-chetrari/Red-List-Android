@@ -1,4 +1,4 @@
-package chetrari.vlad.rts.data.network
+package chetrari.vlad.rts.data.network.api
 
 import chetrari.vlad.rts.data.network.model.CountriesResponse
 import chetrari.vlad.rts.data.network.model.SpeciesByCountryResponse

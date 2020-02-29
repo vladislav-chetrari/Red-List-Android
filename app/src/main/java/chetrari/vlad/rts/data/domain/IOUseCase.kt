@@ -4,7 +4,7 @@ import chetrari.vlad.rts.base.Dispatcher
 import chetrari.vlad.rts.base.UseCase
 import retrofit2.Call
 
-abstract class FetcherUseCase<in Input, Output> : UseCase<Input, Output>() {
+abstract class IOUseCase<in Input, Output> : UseCase<Input, Output>() {
 
     final override val dispatcher = Dispatcher.IO
 

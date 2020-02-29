@@ -21,7 +21,7 @@ annotation class FragmentScoped
 annotation class ViewModelKey(val value: KClass<out ViewModel>)
 
 @Qualifier
-annotation class RedListBaseUrl
+annotation class RedList
 
 @Qualifier
-annotation class RedListToken
+annotation class WikiMedia

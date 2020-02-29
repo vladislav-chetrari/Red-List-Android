@@ -1,4 +1,4 @@
-package chetrari.vlad.rts.data.network
+package chetrari.vlad.rts.data.network.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response
