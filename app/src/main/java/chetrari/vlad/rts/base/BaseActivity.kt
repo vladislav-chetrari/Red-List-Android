@@ -17,9 +17,9 @@ abstract class BaseActivity(
 ) : AppCompatActivity(layoutResId), HasAndroidInjector {
 
     @Inject
-    /*TODO try internal */lateinit var factory: ViewModelProvider.Factory
+    lateinit var factory: ViewModelProvider.Factory
     @Inject
-    /*internal */lateinit var injector: DispatchingAndroidInjector<Any>
+    lateinit var injector: DispatchingAndroidInjector<Any>
 
     override fun androidInjector() = injector
 
@@ -40,16 +40,11 @@ abstract class BaseActivity(
         onProgress: () -> Unit = {},
         onError: (Throwable) -> Unit = {},
         consumer: (T) -> Unit
-    ) {
-        observe(this@BaseActivity, Observer {
-            when (it) {
-                is Event.Progress -> onProgress()
-                is Event.Error -> onError(it.error)
-                is Event.Success -> consumer(it.result)
-            }
-        })
-    }
-
-    protected fun <T> LiveData<T?>.safeObserve(consumer: (T) -> Unit) =
-        observe(this@BaseActivity, Observer { it?.let(consumer) })
+    ) = observe(this@BaseActivity, Observer {
+        when (it) {
+            is Event.Progress -> onProgress()
+            is Event.Error -> onError(it.error)
+            is Event.Success -> consumer(it.result)
+        }
+    })
 }

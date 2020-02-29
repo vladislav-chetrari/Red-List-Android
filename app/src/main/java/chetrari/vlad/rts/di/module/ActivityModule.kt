@@ -1,7 +1,7 @@
 package chetrari.vlad.rts.di.module
 
+import chetrari.vlad.rts.app.main.MainActivity
 import chetrari.vlad.rts.di.ActivityScoped
-import chetrari.vlad.rts.hello.HelloActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -10,5 +10,5 @@ abstract class ActivityModule {
 
     @ActivityScoped
     @ContributesAndroidInjector
-    internal abstract fun helloActivity(): HelloActivity
+    internal abstract fun mainActivity(): MainActivity
 }

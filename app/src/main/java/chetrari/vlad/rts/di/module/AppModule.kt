@@ -3,7 +3,7 @@ package chetrari.vlad.rts.di.module
 import android.content.Context
 import android.content.res.AssetManager
 import android.content.res.Resources
-import chetrari.vlad.rts.App
+import chetrari.vlad.rts.app.App
 import dagger.Module
 import dagger.Provides
 

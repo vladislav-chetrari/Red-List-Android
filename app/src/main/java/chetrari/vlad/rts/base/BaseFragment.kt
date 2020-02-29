@@ -62,9 +62,24 @@ abstract class BaseFragment(
         ViewModelProvider(requireActivity(), factory).get(VM::class.java)
     }
 
-    protected fun <T> LiveData<T>.observe(consumer: (T) -> Unit) =
-        observe(viewLifecycleOwner, Observer { consumer(it) })
+    protected fun <T> LiveData<Event<T>>.observe(
+        onProgress: () -> Unit = {},
+        onError: (Throwable) -> Unit = {},
+        onComplete: () -> Unit = {},
+        consumer: (T) -> Unit
+    ) = observe(viewLifecycleOwner, Observer {
+        when (it) {
+            is Event.Progress -> onProgress()
+            is Event.Error -> {
+                onError(it.error)
+                onComplete()
+            }
+            is Event.Success -> {
+                consumer(it.result)
+                onComplete()
+            }
+        }
+    })
 
-    protected fun <T> LiveData<T?>.safeObserve(consumer: (T) -> Unit) =
-        observe(viewLifecycleOwner, Observer { it?.let(consumer) })
+    protected fun <T> LiveData<T>.observe(consumer: (T) -> Unit) = observe(viewLifecycleOwner, Observer { consumer(it) })
 }

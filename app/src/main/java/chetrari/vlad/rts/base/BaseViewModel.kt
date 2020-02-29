@@ -1,47 +1,51 @@
 package chetrari.vlad.rts.base
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import androidx.annotation.MainThread
+import androidx.lifecycle.*
 
 abstract class BaseViewModel : ViewModel() {
 
-    protected val <T> LiveData<Event<T>>.mutable: MutableLiveData<Event<T>>
+    protected val <T> LiveData<T>.mutable: MutableLiveData<T>
         get() = this as MutableLiveData
 
-    protected fun <T> liveData(initialValue: T? = null): LiveData<Event<T>> =
-        if (initialValue == null) MutableLiveData<Event<T>>()
-        else MutableLiveData(Event.Success(initialValue))
+    protected val <T> LiveData<T>.mediator: MediatorLiveData<T>
+        get() = this as MediatorLiveData
 
-    protected fun <T> launchOnIO(
-        mutableLiveData: MutableLiveData<Event<T>>,
-        block: suspend () -> T
-    ) = launchBackgroundTask(Dispatchers.IO, mutableLiveData, block)
+    protected fun <T> mutableLiveData(initialValue: T? = null): LiveData<T> =
+        if (initialValue == null) MutableLiveData<T>()
+        else MutableLiveData(initialValue)
 
-    protected fun <T> launchComputation(
-        mutableLiveData: MutableLiveData<Event<T>>,
-        block: suspend () -> T
-    ) = launchBackgroundTask(Dispatchers.Default, mutableLiveData, block)
+    protected fun <T> mediatorLiveData(initialValue: T? = null): LiveData<T> =
+        if (initialValue == null) MediatorLiveData<T>()
+        else MediatorLiveData<T>().apply { value = initialValue }
 
-    //TODO remove
-    private fun <T> launchBackgroundTask(
-        dispatcher: CoroutineDispatcher,
-        mutableLiveData: MutableLiveData<Event<T>>,
-        block: suspend () -> T
-    ) {
-        mutableLiveData.postValue(Event.Progress)
-        viewModelScope.launch {
-            try {
-                val result = withContext(dispatcher) { block() }
-                mutableLiveData.postValue(Event.Success(result))
-            } catch (t: Throwable) {
-                mutableLiveData.postValue(Event.Error(t))
-            }
+    protected fun <T> actionLiveData(): LiveData<T> = object : MutableLiveData<T>() {
+        @MainThread
+        override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
+            super.observe(owner, Observer {
+                if (it == null) return@Observer
+                observer.onChanged(it)
+                value = null
+            })
         }
+    }
+
+    protected fun <T> actionLiveData(source: LiveData<T>): LiveData<T> = object : MediatorLiveData<T>() {
+
+        init {
+            addSource(source, ::postValue)
+        }
+
+        @MainThread
+        override fun observe(owner: LifecycleOwner, observer: Observer<in T>) = super.observe(owner, Observer {
+            if (it == null) return@Observer
+            observer.onChanged(it)
+            value = null
+        })
+    }
+
+    protected fun <T> MediatorLiveData<Event<T>>.addSource(source: LiveData<Event<T>>) = addSource(source) {
+        postValue(it)
+        if (it is Event.Success || it is Event.Error) removeSource(source)
     }
 }

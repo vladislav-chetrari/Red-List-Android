@@ -1,4 +1,4 @@
-package chetrari.vlad.rts
+package chetrari.vlad.rts.app
 
 import android.app.Application
 import chetrari.vlad.rts.di.DaggerAppComponent
@@ -10,7 +10,7 @@ import javax.inject.Inject
 class App : Application(), HasAndroidInjector {
 
     @Inject
-    lateinit var injector: DispatchingAndroidInjector<Any>
+    internal lateinit var injector: DispatchingAndroidInjector<Any>
 
     override fun androidInjector() = injector
 
