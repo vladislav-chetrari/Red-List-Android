@@ -10,9 +10,7 @@ class CountriesViewModel @Inject constructor(
     private val countryListFetcher: CountryListFetcher
 ) : BaseViewModel() {
 
-    val countries = countryListFetcher(viewModelScope)
+    val countries = eventMediatorLiveData(sources = *arrayOf(countryListFetcher(viewModelScope)))
 
-    fun onRefresh() {
-        countryListFetcher(viewModelScope)
-    }
+    fun onRefresh() = countries.mediator.addSource(countryListFetcher(viewModelScope))
 }
