@@ -2,20 +2,20 @@ package chetrari.vlad.rts.app.main.species
 
 import androidx.lifecycle.viewModelScope
 import chetrari.vlad.rts.base.BaseViewModel
-import chetrari.vlad.rts.data.domain.SpeciesByCountryFetcher
-import chetrari.vlad.rts.data.domain.SpeciesImageLinkUpdater
-import chetrari.vlad.rts.data.network.model.Country
-import chetrari.vlad.rts.data.network.model.Species
+import chetrari.vlad.rts.data.model.ui.Country
+import chetrari.vlad.rts.data.model.ui.Species
+import chetrari.vlad.rts.data.network.fetch.SpeciesImageLinkUpdater
+import chetrari.vlad.rts.data.repository.SpeciesRepository
 import javax.inject.Inject
 
 class SpeciesViewModel @Inject constructor(
-    private val speciesByCountryFetcher: SpeciesByCountryFetcher,
+    private val speciesRepository: SpeciesRepository,
     private val speciesImageLinkUpdater: SpeciesImageLinkUpdater
 ) : BaseViewModel() {
 
-    val species = eventMediatorLiveData<List<Species>>()
+    fun speciesByCountry(country: Country) = speciesRepository.byCountry(viewModelScope, country)
 
-    fun onSearchByCountry(country: Country) = species.mediator.addSource(speciesByCountryFetcher(viewModelScope, country))
-
-    fun onLoadSpeciesImages(species: Species) = speciesImageLinkUpdater(viewModelScope, species)
+    fun onUpdateImage(species: Species) {
+        speciesImageLinkUpdater(viewModelScope, species)
+    }
 }

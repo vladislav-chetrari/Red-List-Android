@@ -1,4 +1,4 @@
-package chetrari.vlad.rts.data.network.model
+package chetrari.vlad.rts.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
@@ -7,5 +7,5 @@ data class SpeciesByCountryResponse(
     @SerializedName("country")
     val countryIsoCode: String = "",
     @SerializedName("result")
-    val species: List<Species> = emptyList()
+    val species: List<SpeciesResponse> = emptyList()
 )

@@ -1,8 +1,8 @@
-package chetrari.vlad.rts.data.network.model
+package chetrari.vlad.rts.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class WikiImage(
+data class WikiImageResponse(
     @SerializedName("source")
     val url: String = "",
     val width: Int = 0,

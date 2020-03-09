@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import chetrari.vlad.rts.data.network.fetch.Fetcher
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
@@ -20,6 +21,7 @@ abstract class BaseFragment(
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
+
     @Inject
     lateinit var injector: DispatchingAndroidInjector<Any>
 
@@ -66,7 +68,7 @@ abstract class BaseFragment(
         onProgress: () -> Unit = {},
         onError: (Throwable) -> Unit = {},
         onComplete: () -> Unit = {},
-        consumer: (T) -> Unit
+        onSuccess: (T) -> Unit
     ) = observe(viewLifecycleOwner, Observer {
         when (it) {
             is Event.Progress -> onProgress()
@@ -75,11 +77,21 @@ abstract class BaseFragment(
                 onComplete()
             }
             is Event.Success -> {
-                consumer(it.result)
+                onSuccess(it.result)
                 onComplete()
             }
         }
     })
 
-    protected fun <T> LiveData<T>.observe(consumer: (T) -> Unit) = observe(viewLifecycleOwner, Observer { consumer(it) })
+    protected fun LiveData<Fetcher.Event>.observe(
+        onProgress: () -> Unit = {},
+        onComplete: (Throwable?) -> Unit
+    ) = observe(viewLifecycleOwner, Observer {
+        when (it) {
+            Fetcher.Event.Progress -> onProgress()
+            is Fetcher.Event.Complete -> onComplete(it.error)
+        }
+    })
+
+//    protected fun <T> LiveData<T>.observe(consumer: (T) -> Unit) = observe(viewLifecycleOwner, Observer { consumer(it) })
 }

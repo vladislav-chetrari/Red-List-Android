@@ -7,6 +7,7 @@ buildscript {
         navigation = '2.2.1'
         dagger = '2.26'
         retrofit = '2.7.1'
+        objectBox = '2.5.1'
         leakCanary = '2.2'
         timber = '4.7.1'
         gson = '2.8.6'
@@ -15,12 +16,12 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kt"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation"
+        classpath "io.objectbox:objectbox-gradle-plugin:$objectBox"
     }
 }
 

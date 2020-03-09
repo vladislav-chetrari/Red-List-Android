@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import chetrari.vlad.rts.R
 import chetrari.vlad.rts.app.extensions.load
-import chetrari.vlad.rts.data.network.model.Country
+import chetrari.vlad.rts.data.model.ui.Country
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_country.*
 
@@ -30,13 +30,13 @@ class CountriesAdapter(
 
         fun bind(country: Country) {
             name.text = country.name
-            flagImage.load(country.flagImageLink)
+            flagImage.load(containerView.resources.getString(R.string.country_flag_icon, country.isoCode))
             containerView.setOnClickListener { onClick(country) }
         }
     }
 
     private class ItemCallback : DiffUtil.ItemCallback<Country>() {
         override fun areItemsTheSame(oldItem: Country, newItem: Country) = oldItem.isoCode == newItem.isoCode
-        override fun areContentsTheSame(oldItem: Country, newItem: Country): Boolean = oldItem == newItem
+        override fun areContentsTheSame(oldItem: Country, newItem: Country) = oldItem == newItem
     }
 }

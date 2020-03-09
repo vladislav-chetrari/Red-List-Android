@@ -13,18 +13,14 @@ abstract class BaseViewModel : ViewModel() {
     protected val <T> LiveData<T>.mediator: MediatorLiveData<T>
         get() = this as MediatorLiveData
 
+    protected val <T> LiveData<Event<T>>.eventMediator: EventMediatorLiveData<T>
+        get() = this as EventMediatorLiveData<T>
+
     protected fun <T> mutableLiveData(initialValue: T? = null): LiveData<T> = MutableLiveData<T>().apply {
         if (initialValue != null) value = initialValue
     }
 
-    protected fun <T> MediatorLiveData<Event<T>>.addSource(source: LiveData<Event<T>>) = addSource(source) {
-        postValue(it)
-        if (it is Event.Success || it is Event.Error) removeSource(source)
-    }
-
     protected fun <T> eventMediatorLiveData(
-        vararg sources: LiveData<Event<T>> = emptyArray()
-    ): LiveData<Event<T>> = MediatorLiveData<Event<T>>().apply {
-        sources.forEach { addSource(it) }
-    }
+        source: () -> LiveData<Event<T>>? = { null }
+    ): LiveData<Event<T>> = EventMediatorLiveData(source)
 }

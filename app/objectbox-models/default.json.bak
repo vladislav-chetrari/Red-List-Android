@@ -1,0 +1,113 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:5663884373035999722",
+      "lastPropertyId": "3:6682369415948951198",
+      "name": "Country",
+      "properties": [
+        {
+          "id": "1:257909912055674465",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:9133306811828327498",
+          "name": "isoCode",
+          "indexId": "1:864387152399398757",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:6682369415948951198",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:6952749619555742966",
+      "lastPropertyId": "5:384986677321256437",
+      "name": "Species",
+      "properties": [
+        {
+          "id": "1:6860001192709747161",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7318619182394545544",
+          "name": "taxonId",
+          "type": 5,
+          "flags": 4
+        },
+        {
+          "id": "3:1371240830333633476",
+          "name": "scientificName",
+          "type": 9
+        },
+        {
+          "id": "4:2798589552706805731",
+          "name": "category",
+          "type": 9
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:8995118879042534967",
+          "name": "images",
+          "targetId": "3:8459080800160511825"
+        },
+        {
+          "id": "2:5153887385875243248",
+          "name": "countries",
+          "targetId": "1:5663884373035999722"
+        }
+      ]
+    },
+    {
+      "id": "3:8459080800160511825",
+      "lastPropertyId": "3:1767906884555488713",
+      "name": "SpeciesImage",
+      "properties": [
+        {
+          "id": "1:8942427152488778862",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8313843550925241697",
+          "name": "thumbnail",
+          "type": 9
+        },
+        {
+          "id": "3:1767906884555488713",
+          "name": "fullSize",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "3:8459080800160511825",
+  "lastIndexId": "2:7116413083689596836",
+  "lastRelationId": "2:5153887385875243248",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [
+    7116413083689596836
+  ],
+  "retiredPropertyUids": [
+    384986677321256437
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}

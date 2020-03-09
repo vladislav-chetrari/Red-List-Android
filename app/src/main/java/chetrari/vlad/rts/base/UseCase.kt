@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+//TODO remove
 abstract class UseCase<in Input, Output> {
 
     protected open val dispatcher: CoroutineDispatcher = Dispatcher.Main

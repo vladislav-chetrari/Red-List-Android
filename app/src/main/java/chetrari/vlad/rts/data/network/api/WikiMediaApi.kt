@@ -1,6 +1,6 @@
 package chetrari.vlad.rts.data.network.api
 
-import chetrari.vlad.rts.data.network.model.WikiMediaResponse
+import chetrari.vlad.rts.data.model.response.WikiMediaResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

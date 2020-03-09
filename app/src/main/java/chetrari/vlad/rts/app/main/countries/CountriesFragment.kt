@@ -8,7 +8,7 @@ import chetrari.vlad.rts.app.extensions.errorSnackbar
 import chetrari.vlad.rts.app.main.MainActivity
 import chetrari.vlad.rts.app.main.countries.CountriesFragmentDirections.Companion.actionDestinationCountriesToSpeciesListFragment
 import chetrari.vlad.rts.base.BaseFragment
-import chetrari.vlad.rts.data.network.model.Country
+import chetrari.vlad.rts.data.model.ui.Country
 import kotlinx.android.synthetic.main.fragment_list.*
 
 class CountriesFragment : BaseFragment(R.layout.fragment_list) {
@@ -27,7 +27,7 @@ class CountriesFragment : BaseFragment(R.layout.fragment_list) {
         onProgress = { refreshLayout.isRefreshing = true },
         onComplete = { refreshLayout.isRefreshing = false },
         onError = { container.errorSnackbar(retryAction = viewModel::onRefresh) },
-        consumer = adapter::submitList
+        onSuccess = adapter::submitList
     )
 
     override fun onDestroyView() {

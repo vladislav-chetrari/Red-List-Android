@@ -3,4 +3,6 @@
     <string name="red_list_api_base_url">https://apiv3.iucnredlist.org/api/v3/</string>
     <string name="red_list_api_token">9bb4facb6d23f48efbf424bb05c0c1ef1cf6f468393bc745d42179ac4aca5fee</string>
     <string name="wiki_media_api_base_url">https://en.wikipedia.org/api/rest_v1/</string>
+
+    <string name="country_flag_icon">https://www.countryflags.io/%s/shiny/64.png</string>
 </resources>
