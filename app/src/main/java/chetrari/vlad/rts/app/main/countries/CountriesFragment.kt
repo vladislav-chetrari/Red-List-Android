@@ -8,8 +8,9 @@ import chetrari.vlad.rts.app.extensions.errorSnackbar
 import chetrari.vlad.rts.app.main.MainActivity
 import chetrari.vlad.rts.app.main.countries.CountriesFragmentDirections.Companion.actionDestinationCountriesToSpeciesListFragment
 import chetrari.vlad.rts.base.BaseFragment
-import chetrari.vlad.rts.data.model.ui.Country
+import chetrari.vlad.rts.data.persistence.model.Country
 import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.toolbar_simple.*
 
 class CountriesFragment : BaseFragment(R.layout.fragment_list) {
 
@@ -31,10 +32,10 @@ class CountriesFragment : BaseFragment(R.layout.fragment_list) {
     )
 
     override fun onDestroyView() {
-        list.adapter = adapter
+        list.adapter = null
         super.onDestroyView()
     }
 
-    private fun onCountrySelected(country: Country) =
-        findNavController().navigate(actionDestinationCountriesToSpeciesListFragment(country))
+    private fun onCountrySelected(country: Country) = findNavController()
+        .navigate(actionDestinationCountriesToSpeciesListFragment(country))
 }

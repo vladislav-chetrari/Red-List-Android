@@ -8,21 +8,47 @@
     <fragment
         android:id="@+id/destinationCountries"
         android:name="chetrari.vlad.rts.app.main.countries.CountriesFragment"
-        android:label="Countries"
+        android:label="@string/label_countries"
         tools:layout="@layout/fragment_list">
         <action
             android:id="@+id/action_destinationCountries_to_speciesListFragment"
-            app:destination="@id/speciesListFragment"></action>
+            app:destination="@id/speciesListFragment" />
     </fragment>
     <fragment
         android:id="@+id/speciesListFragment"
         android:name="chetrari.vlad.rts.app.main.species.SpeciesListFragment"
-        android:label="Species list"
+        android:label="@string/label_species_list"
         tools:layout="@layout/fragment_list">
         <argument
             android:name="country"
-            app:argType="chetrari.vlad.rts.data.model.ui.Country"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:argType="chetrari.vlad.rts.data.persistence.model.Country"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_speciesListFragment_to_speciesFragment"
+            app:destination="@id/speciesFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/speciesFragment"
+        android:name="chetrari.vlad.rts.app.main.species.details.SpeciesFragment"
+        android:label="@string/label_species_details"
+        tools:layout="@layout/fragment_species">
+        <argument
+            android:name="speciesId"
+            android:defaultValue="42294L"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_speciesFragment_to_imageGalleryActivity"
+            app:destination="@id/imageGalleryActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/imageGalleryActivity"
+        android:name="chetrari.vlad.rts.app.main.images.ImageGalleryActivity"
+        android:label="ImageGalleryActivity">
+        <argument
+            android:name="images"
+            app:argType="chetrari.vlad.rts.data.persistence.model.SpeciesImage[]" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </activity>
 </navigation>

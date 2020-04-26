@@ -1,9 +1,19 @@
 <resources>
 
+    <style name="AppTheme.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@style/AppTheme.ActionBar</item>
+    </style>
+
+    <style name="AppTheme.ExpandedToolbarTitle" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:shadowRadius">8</item>
+        <item name="android:shadowColor">@android:color/black</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
@@ -14,6 +24,11 @@
         <item name="android:layout_marginBottom">-6dp</item>
         <item name="android:layout_marginTop">-6dp</item>
         <item name="android:indeterminate">true</item>
+    </style>
+
+    <style name="ListItemContainer">
+        <item name="android:padding">@dimen/content_padding_medium</item>
+        <item name="android:foreground">?selectableItemBackground</item>
     </style>
 
 </resources>

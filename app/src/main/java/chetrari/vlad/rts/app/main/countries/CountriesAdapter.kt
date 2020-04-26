@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import chetrari.vlad.rts.R
 import chetrari.vlad.rts.app.extensions.load
-import chetrari.vlad.rts.data.model.ui.Country
+import chetrari.vlad.rts.data.persistence.model.Country
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_country.*
 

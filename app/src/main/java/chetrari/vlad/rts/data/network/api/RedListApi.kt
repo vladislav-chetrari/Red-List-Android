@@ -1,7 +1,6 @@
 package chetrari.vlad.rts.data.network.api
 
-import chetrari.vlad.rts.data.model.response.CountriesResponse
-import chetrari.vlad.rts.data.model.response.SpeciesByCountryResponse
+import chetrari.vlad.rts.data.network.model.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -14,6 +13,25 @@ interface RedListApi {
     @GET("country/getspecies/{countryIsoCode}")
     fun speciesByCountry(
         @Path("countryIsoCode") countryIsoCode: String
-    ): Call<SpeciesByCountryResponse>
+    ): Call<ArrayResponse<SpeciesResponse>>
 
+    @GET("species/id/{id}")
+    fun detailsBySpeciesId(
+        @Path("id") speciesId: Long
+    ): Call<ArrayResponse<SpeciesResponse>>
+
+    @GET("species/{name}")
+    fun detailsBySpeciesScientificName(
+        @Path("name") scientificName: String
+    ): Call<ArrayResponse<SpeciesResponse>>
+
+    @GET("species/common_names/{name}")
+    fun commonNamesByScientificName(
+        @Path("name") scientificName: String
+    ): Call<ArrayResponse<CommonNameResponse>>
+
+    @GET("species/narrative/id/{id}")
+    fun narrativeBySpeciesId(
+        @Path("id") speciesId: Long
+    ): Call<ArrayResponse<SpeciesNarrativeResponse>>
 }

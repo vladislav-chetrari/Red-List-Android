@@ -1,26 +1,36 @@
 package chetrari.vlad.rts.base
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.annotation.CallSuper
+import androidx.lifecycle.*
 
 abstract class BaseViewModel : ViewModel() {
 
-    protected val <T> LiveData<T>.mutable: MutableLiveData<T>
+    private val updatableRegistry = arrayListOf<CoroutineUpdatable>()
+
+    private val <T> LiveData<T>.mutable: MutableLiveData<T>
         get() = this as MutableLiveData
 
     protected val <T> LiveData<T>.mediator: MediatorLiveData<T>
         get() = this as MediatorLiveData
 
-    protected val <T> LiveData<Event<T>>.eventMediator: EventMediatorLiveData<T>
-        get() = this as EventMediatorLiveData<T>
+    protected val <T> LiveData<T>.updatable: CoroutineUpdatable
+        get() = this as CoroutineUpdatable
 
-    protected fun <T> mutableLiveData(initialValue: T? = null): LiveData<T> = MutableLiveData<T>().apply {
-        if (initialValue != null) value = initialValue
+    protected fun <T> liveData(value: T? = null): LiveData<T> =
+        if (value == null) MutableLiveData() else MutableLiveData(value)
+
+    protected fun CoroutineUpdatable.register() {
+        updatableRegistry += this
     }
 
-    protected fun <T> eventMediatorLiveData(
-        source: () -> LiveData<Event<T>>? = { null }
-    ): LiveData<Event<T>> = EventMediatorLiveData(source)
+    protected fun updateRegistered() = updatableRegistry
+        .filterIsInstance<EventLiveData<*>>()
+        .filter(LiveData<*>::hasActiveObservers)
+        .forEach { it.update(viewModelScope) }
+
+    @CallSuper
+    override fun onCleared() {
+        updatableRegistry.clear()
+        super.onCleared()
+    }
 }

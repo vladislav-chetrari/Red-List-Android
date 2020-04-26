@@ -24,4 +24,4 @@ annotation class ViewModelKey(val value: KClass<out ViewModel>)
 annotation class RedList
 
 @Qualifier
-annotation class WikiMedia
+annotation class GoogleCustomSearch

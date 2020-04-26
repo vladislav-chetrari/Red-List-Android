@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="KeyValuePairsParagraphView">
+        <attr name="title" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ParagraphView">
+        <attr name="titleText" format="string" />
+        <attr name="contentText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="KeyValuePairView">
+        <attr name="keyText" format="string" />
+        <attr name="valueText" format="string" />
+        <attr name="hideWhenValueEmpty" format="boolean" />
+        <attr name="enlarged" format="boolean" />
+    </declare-styleable>
+</resources>

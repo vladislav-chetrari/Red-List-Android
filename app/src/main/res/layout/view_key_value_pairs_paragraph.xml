@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/_motionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/content_padding_medium"
+    app:layoutDescription="@xml/view_paragraph_scene"
+    tools:motionProgress="1"
+    tools:showPaths="true">
+
+    <TextView
+        android:id="@+id/_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/content_padding_medium"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        tools:text="@tools:sample/cities" />
+
+
+    <ImageView
+        android:id="@+id/_expandIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_expand_more_accent_24dp"
+        tools:ignore="ContentDescription" />
+
+    <View
+        android:id="@+id/_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginTop="@dimen/content_padding_medium"
+        android:background="@color/colorPrimary"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/content_padding_medium"
+        android:orientation="vertical" />
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

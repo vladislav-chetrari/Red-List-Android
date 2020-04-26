@@ -1,17 +1,14 @@
 package chetrari.vlad.rts.data.network.interceptor
 
-import okhttp3.Interceptor
-import okhttp3.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RedListInterceptor(
-    private val token: String
-) : Interceptor {
+@Singleton
+class RedListInterceptor @Inject constructor() : BaseInterceptor() {
 
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-        val url = request.url().newBuilder()
-            .addQueryParameter("token", token)
-            .build()
-        return chain.proceed(request.newBuilder().url(url).build())
+    override val queryParameters = hashMapOf("token" to TOKEN)
+
+    private companion object {
+        const val TOKEN = "9bb4facb6d23f48efbf424bb05c0c1ef1cf6f468393bc745d42179ac4aca5fee"
     }
 }

@@ -1,7 +1,9 @@
 package chetrari.vlad.rts.base
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 
-/*
+
 fun <T, R> LiveData<Event<T>>.map(consumer: (T) -> R): LiveData<Event<R>> = MediatorLiveData<Event<R>>().apply {
     addSource(this@map) {
         postValue(
@@ -18,4 +20,4 @@ fun <T> LiveData<Event<T>>.filter(predicate: (T) -> Boolean): LiveData<Event<T>>
     addSource(this@filter) {
         if (it is Event.Progress || it is Event.Error || (it is Event.Success && predicate(it.result))) postValue(it)
     }
-}*/
+}

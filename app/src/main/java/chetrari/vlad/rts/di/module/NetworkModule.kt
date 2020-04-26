@@ -2,11 +2,14 @@ package chetrari.vlad.rts.di.module
 
 import android.content.res.Resources
 import chetrari.vlad.rts.R
+import chetrari.vlad.rts.data.network.api.GoogleCustomSearchApi
 import chetrari.vlad.rts.data.network.api.RedListApi
-import chetrari.vlad.rts.data.network.api.WikiMediaApi
+import chetrari.vlad.rts.data.network.interceptor.GoogleCustomSearchInterceptor
 import chetrari.vlad.rts.data.network.interceptor.RedListInterceptor
+import chetrari.vlad.rts.di.GoogleCustomSearch
 import chetrari.vlad.rts.di.RedList
-import chetrari.vlad.rts.di.WikiMedia
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -21,15 +24,15 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun gsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
+    fun gson(): Gson = GsonBuilder().serializeNulls().create()
+
+    @Provides
+    @Singleton
+    fun gsonConverterFactory(gson: Gson): GsonConverterFactory = GsonConverterFactory.create(gson)
 
     @Provides
     @Singleton
     fun loggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-
-    @Provides
-    @Singleton
-    fun redListInterceptor(res: Resources) = RedListInterceptor(res.getString(R.string.red_list_api_token))
 
     @Provides
     @Singleton
@@ -46,17 +49,21 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    @WikiMedia
-    fun wikiMediaHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient = OkHttpClient.Builder()
+    @GoogleCustomSearch
+    fun googleCustomSearchClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        googleCustomSearchInterceptor: GoogleCustomSearchInterceptor
+    ): OkHttpClient = OkHttpClient.Builder()
         .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
         .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
         .addInterceptor(loggingInterceptor)
+        .addInterceptor(googleCustomSearchInterceptor)
         .build()
 
     @Provides
     @Singleton
     @RedList
-    fun retrofit(
+    fun redListRetrofit(
         res: Resources,
         @RedList client: OkHttpClient,
         factory: GsonConverterFactory
@@ -68,13 +75,13 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    @WikiMedia
+    @GoogleCustomSearch
     fun wikiMediaRetrofit(
         res: Resources,
-        @WikiMedia client: OkHttpClient,
+        @GoogleCustomSearch client: OkHttpClient,
         factory: GsonConverterFactory
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(res.getString(R.string.wiki_media_api_base_url))
+        .baseUrl(res.getString(R.string.google_custom_search_base_url))
         .client(client)
         .addConverterFactory(factory)
         .build()
@@ -85,7 +92,8 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun wikiMediaApi(@WikiMedia retrofit: Retrofit): WikiMediaApi = retrofit.create(WikiMediaApi::class.java)
+    fun wikiMediaApi(@GoogleCustomSearch retrofit: Retrofit): GoogleCustomSearchApi =
+        retrofit.create(GoogleCustomSearchApi::class.java)
 
     private companion object {
         const val REQUEST_TIMEOUT = 30L

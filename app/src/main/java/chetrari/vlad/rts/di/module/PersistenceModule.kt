@@ -1,9 +1,9 @@
 package chetrari.vlad.rts.di.module
 
 import android.content.Context
-import chetrari.vlad.rts.data.model.ui.Country
-import chetrari.vlad.rts.data.model.ui.MyObjectBox
-import chetrari.vlad.rts.data.model.ui.Species
+import chetrari.vlad.rts.data.persistence.model.Country
+import chetrari.vlad.rts.data.persistence.model.MyObjectBox
+import chetrari.vlad.rts.data.persistence.model.Species
 import dagger.Module
 import dagger.Provides
 import io.objectbox.BoxStore

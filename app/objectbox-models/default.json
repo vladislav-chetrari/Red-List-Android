@@ -17,9 +17,7 @@
         {
           "id": "2:9133306811828327498",
           "name": "isoCode",
-          "indexId": "1:864387152399398757",
-          "type": 9,
-          "flags": 2080
+          "type": 9
         },
         {
           "id": "3:6682369415948951198",
@@ -31,30 +29,75 @@
     },
     {
       "id": "2:6952749619555742966",
-      "lastPropertyId": "5:384986677321256437",
+      "lastPropertyId": "15:3547475229789066700",
       "name": "Species",
       "properties": [
         {
           "id": "1:6860001192709747161",
           "name": "id",
           "type": 6,
-          "flags": 1
-        },
-        {
-          "id": "2:7318619182394545544",
-          "name": "taxonId",
-          "type": 5,
-          "flags": 4
+          "flags": 129
         },
         {
           "id": "3:1371240830333633476",
           "name": "scientificName",
-          "type": 9
+          "indexId": "3:2821977820806484486",
+          "type": 9,
+          "flags": 2080
         },
         {
           "id": "4:2798589552706805731",
           "name": "category",
+          "type": 5,
+          "flags": 2
+        },
+        {
+          "id": "6:1912758591789382635",
+          "name": "kingdom",
           "type": 9
+        },
+        {
+          "id": "7:2611508088291929461",
+          "name": "phylum",
+          "type": 9
+        },
+        {
+          "id": "8:6267846597821056154",
+          "name": "bioClass",
+          "type": 9
+        },
+        {
+          "id": "9:2793639663834523919",
+          "name": "order",
+          "type": 9
+        },
+        {
+          "id": "10:4749028649930647809",
+          "name": "family",
+          "type": 9
+        },
+        {
+          "id": "11:6306284684788015949",
+          "name": "genus",
+          "type": 9
+        },
+        {
+          "id": "12:2872060547581671380",
+          "name": "commonName",
+          "type": 9
+        },
+        {
+          "id": "13:7371014414833092664",
+          "name": "populationTrend",
+          "type": 9
+        },
+        {
+          "id": "15:3547475229789066700",
+          "name": "narrativeId",
+          "indexId": "4:7345751162892428945",
+          "type": 11,
+          "flags": 1548,
+          "relationTarget": "Narrative"
         }
       ],
       "relations": [
@@ -93,20 +136,72 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "4:7709702679828422081",
+      "lastPropertyId": "8:1309607274894025192",
+      "name": "Narrative",
+      "properties": [
+        {
+          "id": "1:6184754989697405303",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:9035232656749428632",
+          "name": "taxonomicNotes",
+          "type": 9
+        },
+        {
+          "id": "3:2244727532303614090",
+          "name": "justification",
+          "type": 9
+        },
+        {
+          "id": "4:107157672769836081",
+          "name": "geographicRange",
+          "type": 9
+        },
+        {
+          "id": "5:930977723007598528",
+          "name": "population",
+          "type": 9
+        },
+        {
+          "id": "6:6965821268405760175",
+          "name": "habitatAndEcology",
+          "type": 9
+        },
+        {
+          "id": "7:6592381494976414381",
+          "name": "threats",
+          "type": 9
+        },
+        {
+          "id": "8:1309607274894025192",
+          "name": "conservationActions",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "3:8459080800160511825",
-  "lastIndexId": "2:7116413083689596836",
+  "lastEntityId": "4:7709702679828422081",
+  "lastIndexId": "4:7345751162892428945",
   "lastRelationId": "2:5153887385875243248",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [
-    7116413083689596836
+    7116413083689596836,
+    864387152399398757
   ],
   "retiredPropertyUids": [
-    384986677321256437
+    384986677321256437,
+    7318619182394545544,
+    8963157492279404446
   ],
   "retiredRelationUids": [],
   "version": 1
