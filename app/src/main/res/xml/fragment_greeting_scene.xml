@@ -23,60 +23,128 @@
         app:duration="@android:integer/config_longAnimTime"
         app:motionInterpolator="linear" />
 
+    <ConstraintSet android:id="@+id/baseSet">
+        <Constraint android:id="@+id/greeting">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+        <Constraint android:id="@+id/description">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+        <Constraint android:id="@+id/progressContainer">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+    </ConstraintSet>
+
     <ConstraintSet android:id="@+id/step1">
+        <Constraint android:id="@+id/greeting">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="parent" />
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+        <Constraint android:id="@+id/description">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="parent" />
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+        <Constraint android:id="@+id/progressContainer">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="parent" />
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/step2">
+        <Constraint android:id="@+id/greeting">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <PropertySet android:visibility="visible" />
+        </Constraint>
+        <Constraint android:id="@+id/description">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="parent" />
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+        <Constraint android:id="@+id/progressContainer">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="parent" />
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/step3">
         <Constraint android:id="@+id/greeting">
             <Layout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@+id/description"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="spread" />
-            <PropertySet android:visibility="invisible" />
+                app:layout_constraintVertical_chainStyle="packed" />
+            <PropertySet android:visibility="visible" />
         </Constraint>
         <Constraint android:id="@+id/description">
             <Layout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/progressContainer"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/greeting"
-                app:layout_constraintVertical_chainStyle="spread" />
-            <PropertySet android:visibility="gone" />
+                app:layout_constraintVertical_chainStyle="packed" />
+            <PropertySet android:visibility="visible" />
+        </Constraint>
+        <Constraint android:id="@+id/progressContainer">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="parent" />
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/step4">
+        <Constraint android:id="@+id/greeting">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/description"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+            <PropertySet android:visibility="visible" />
+        </Constraint>
+        <Constraint android:id="@+id/description">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/progressContainer"
+                app:layout_constraintTop_toBottomOf="@+id/greeting"
+                app:layout_constraintVertical_chainStyle="packed" />
+            <PropertySet android:visibility="visible" />
         </Constraint>
         <Constraint android:id="@+id/progressContainer">
             <Layout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent" />
-            <PropertySet android:visibility="gone" />
-        </Constraint>
-    </ConstraintSet>
-
-    <ConstraintSet
-        android:id="@+id/step2"
-        app:deriveConstraintsFrom="@id/step1">
-        <Constraint android:id="@+id/greeting">
-            <PropertySet android:visibility="visible" />
-        </Constraint>
-        <!--<Constraint android:id="@+id/description">
-            <PropertySet android:visibility="invisible" />
-        </Constraint>-->
-    </ConstraintSet>
-
-    <ConstraintSet
-        android:id="@+id/step3"
-        app:deriveConstraintsFrom="@id/step2">
-        <Constraint android:id="@+id/description">
-            <PropertySet android:visibility="visible" />
-        </Constraint>
-        <!--<Constraint android:id="@+id/progressContainer">
-            <PropertySet android:visibility="invisible" />
-        </Constraint>-->
-    </ConstraintSet>
-
-    <ConstraintSet
-        android:id="@+id/step4"
-        app:deriveConstraintsFrom="@id/step3">
-        <Constraint android:id="@+id/progressContainer">
             <PropertySet android:visibility="visible" />
         </Constraint>
     </ConstraintSet>

@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/content_padding_large"
-    app:layoutDescription="@xml/fragment_greeting_scene"
-    tools:motionProgress="0"
-    tools:showPaths="true">
+    app:layoutDescription="@xml/fragment_greeting_scene">
 
     <TextView
         android:id="@+id/greeting"
@@ -17,7 +15,10 @@
         android:text="@string/label_greeting"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@color/colorPrimaryDark"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/description"
@@ -25,13 +26,17 @@
         android:layout_height="wrap_content"
         android:text="@string/label_app_description"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <LinearLayout
         android:id="@+id/progressContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="parent">
 
         <TextView
             android:id="@+id/progressStep"
