@@ -33,4 +33,6 @@
     <string name="vulnerability_extinct">Extinct</string>
     <string name="label_vulnerability">Vulerability</string>
     <string name="label_share">Share</string>
+    <string name="label_greeting">Welcome</string>
+    <string name="label_app_description">This app is dedicated to inform people about threatened species of the world.</string>
 </resources>
