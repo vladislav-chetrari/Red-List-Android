@@ -24,7 +24,7 @@ class CountriesFragment : BaseFragment(R.layout.fragment_list) {
         refreshLayout.setOnRefreshListener(viewModel::onRefresh)
     }
 
-    override fun observeLiveData() = viewModel.countries.observe(
+    override fun observeLiveData() = viewModel.countries.observeEvent(
         onProgress = { refreshLayout.isRefreshing = true },
         onComplete = { refreshLayout.isRefreshing = false },
         onError = { container.errorSnackbar(retryAction = viewModel::onRefresh) },

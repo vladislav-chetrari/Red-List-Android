@@ -3,13 +3,14 @@ package chetrari.vlad.rts.app.splash
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import chetrari.vlad.rts.app.welcome.WelcomeActivity
+import chetrari.vlad.rts.app.main.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivity(Intent(this, WelcomeActivity::class.java))
+        //TODO revert
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 }

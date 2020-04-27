@@ -2,10 +2,14 @@ package chetrari.vlad.rts.base
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.*
+import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel() {
 
     private val updatableRegistry = arrayListOf<CoroutineUpdatable>()
+
+    protected val context: CoroutineContext
+        get() = viewModelScope.coroutineContext
 
     private val <T> LiveData<T>.mutable: MutableLiveData<T>
         get() = this as MutableLiveData

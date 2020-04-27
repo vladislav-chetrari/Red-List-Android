@@ -1,23 +1,20 @@
 package chetrari.vlad.rts.app.main.countries
 
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import chetrari.vlad.rts.base.BaseViewModel
-import chetrari.vlad.rts.data.network.fetch.CountryListDataUpdater
-import chetrari.vlad.rts.data.network.fetch.invoke
-import chetrari.vlad.rts.data.persistence.model.Country_
-import chetrari.vlad.rts.data.repository.CountryRepository
-import chetrari.vlad.rts.data.repository.ObjectBoxRepository
+import chetrari.vlad.rts.data.repository.CountryLiveRepository
 import javax.inject.Inject
 
 
 class CountriesViewModel @Inject constructor(
-    repository: CountryRepository,
-    countryListFetcher: CountryListDataUpdater
+    private val repository: CountryLiveRepository
 ) : BaseViewModel() {
 
-    val countries = repository.liveDataByQuery(
-        ObjectBoxRepository.UpdateProperties(scope = viewModelScope, procedure = countryListFetcher::invoke)
-    ) { order(Country_.name) }
+    private val refreshTrigger = MutableLiveData(Unit)
+    val countries = refreshTrigger.switchMap {
+        repository.all(context)
+    }
 
-    fun onRefresh() = countries.updatable.update(viewModelScope)
+    fun onRefresh() = refreshTrigger.postValue(Unit)
 }

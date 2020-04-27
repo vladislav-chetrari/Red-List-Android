@@ -32,7 +32,7 @@ class SpeciesListFragment : BaseFragment(R.layout.fragment_species_list) {
 
     override fun observeLiveData() {
         val country = args.country
-        if (country != null) viewModel.speciesByCountry(country).observe(
+        if (country != null) viewModel.speciesByCountry(country).observeEvent(
             onProgress = { refreshLayout.isRefreshing = true },
             onComplete = { refreshLayout.isRefreshing = false },
             onError = { refreshLayout.errorSnackbar(retryAction = ::refresh); Timber.e(it) },

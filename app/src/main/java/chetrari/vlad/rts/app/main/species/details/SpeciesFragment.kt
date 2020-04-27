@@ -37,7 +37,7 @@ class SpeciesFragment : BaseFragment(R.layout.fragment_species) {
         refreshLayout.setOnRefreshListener(::refresh)
     }
 
-    override fun observeLiveData() = viewModel.byId(args.speciesId).observe(
+    override fun observeLiveData() = viewModel.byId(args.speciesId).observeEvent(
         onError = { coordinator.errorSnackbar { refresh() };Timber.w(it) },
         onProgress = { refreshLayout.isRefreshing = true },
         onComplete = { refreshLayout.isRefreshing = false }

@@ -15,7 +15,10 @@ import io.objectbox.query.Query
 import io.objectbox.query.QueryBuilder
 import kotlinx.coroutines.CoroutineScope
 
-open class ObjectBoxRepository<T>(private val box: Box<T>, private val idProperty: Property<T>) {
+open class ObjectBoxRepository<T>(
+    private val box: Box<T>,
+    private val idProperty: Property<T>
+) {
 
     val all: List<T>
         get() = box.all
