@@ -27,6 +27,8 @@ abstract class BaseViewModel : ViewModel() {
         updatableRegistry += this
     }
 
+    protected fun <T> MutableLiveData<T>.refresh() = postValue(value)
+
     protected fun updateRegistered() = updatableRegistry
         .filterIsInstance<EventLiveData<*>>()
         .filter(LiveData<*>::hasActiveObservers)

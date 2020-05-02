@@ -37,17 +37,20 @@ class SpeciesFragment : BaseFragment(R.layout.fragment_species) {
         refreshLayout.setOnRefreshListener(::refresh)
     }
 
-    override fun observeLiveData() = viewModel.byId(args.speciesId).observeEvent(
-        onError = { coordinator.errorSnackbar { refresh() };Timber.w(it) },
-        onProgress = { refreshLayout.isRefreshing = true },
-        onComplete = { refreshLayout.isRefreshing = false }
-    ) {
-        collapsingToolbar.title = it.commonName
-        scientificName.value = it.scientificName
-        setupVulnerability(it.category)
-        setupImages(it)
-        setupTaxonomy(it)
-        it.narrative.target?.let(::setupNarrative)
+    override fun observeLiveData() = viewModel.run {
+        onSpeciesIdReceived(args.speciesId)
+        species.observeEvent(
+            onError = { coordinator.errorSnackbar { refresh() };Timber.w(it) },
+            onProgress = { refreshLayout.isRefreshing = true },
+            onComplete = { refreshLayout.isRefreshing = false }
+        ) {
+            collapsingToolbar.title = it.commonName
+            scientificName.value = it.scientificName
+            setupVulnerability(it.category)
+            setupImages(it)
+            setupTaxonomy(it)
+            it.narrative.target?.let(::setupNarrative)
+        }
     }
 
     private fun refresh() = viewModel.onRefresh()

@@ -1,34 +1,25 @@
 package chetrari.vlad.rts.app.main.species
 
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import androidx.paging.PagedList
 import chetrari.vlad.rts.base.BaseViewModel
-import chetrari.vlad.rts.data.network.fetch.SpeciesByCountryDataUpdater
 import chetrari.vlad.rts.data.persistence.model.Country
-import chetrari.vlad.rts.data.persistence.model.Country_
-import chetrari.vlad.rts.data.persistence.model.Species_
-import chetrari.vlad.rts.data.repository.ObjectBoxRepository
-import chetrari.vlad.rts.data.repository.SpeciesRepository
+import chetrari.vlad.rts.data.repository.SpeciesLiveRepository
 import javax.inject.Inject
 
 class SpeciesListViewModel @Inject constructor(
-    private val repository: SpeciesRepository,
-    private val byCountryDataUpdater: SpeciesByCountryDataUpdater
+    private val liveRepository: SpeciesLiveRepository
 ) : BaseViewModel() {
 
-    fun speciesByCountry(country: Country) = repository.pagedLiveDataByQuery(
-        updateProperties = ObjectBoxRepository.UpdateProperties(
-            scope = viewModelScope,
-            procedure = { byCountryDataUpdater(country) }),
-        config = pagedListConfig,
-        query = {
-            order(Species_.scientificName)
-                .link(Species_.countries)
-                .equal(Country_.isoCode, country.isoCode)
-        })
-        .also { it.updatable.register() }
+    private val selectedCountry = MutableLiveData<Country>()
+    val species = selectedCountry.switchMap {
+        liveRepository.byCountryPaged(context, pagedListConfig, it)
+    }
 
-    fun onRefresh() = updateRegistered()
+    fun onSearchByCountry(country: Country) = selectedCountry.postValue(country)
+
+    fun onRefresh() = selectedCountry.refresh()
 
     private companion object {
         val pagedListConfig: PagedList.Config = PagedList.Config.Builder()

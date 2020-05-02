@@ -14,7 +14,6 @@ import chetrari.vlad.rts.base.BaseFragment
 import chetrari.vlad.rts.data.persistence.model.Species
 import kotlinx.android.synthetic.main.fragment_species_list.*
 import kotlinx.android.synthetic.main.toolbar_simple.*
-import timber.log.Timber
 
 class SpeciesListFragment : BaseFragment(R.layout.fragment_species_list) {
 
@@ -27,25 +26,25 @@ class SpeciesListFragment : BaseFragment(R.layout.fragment_species_list) {
         (requireActivity() as MainActivity).setSupportActionBar(toolbar)
         toolbar.setNavIconColor(Color.WHITE)
         list.adapter = adapter
-        refreshLayout.setOnRefreshListener(::refresh)
+        refreshLayout.setOnRefreshListener(viewModel::onRefresh)
     }
 
     override fun observeLiveData() {
-        val country = args.country
-        if (country != null) viewModel.speciesByCountry(country).observeEvent(
-            onProgress = { refreshLayout.isRefreshing = true },
-            onComplete = { refreshLayout.isRefreshing = false },
-            onError = { refreshLayout.errorSnackbar(retryAction = ::refresh); Timber.e(it) },
-            onSuccess = adapter::submitList
-        )
+        args.country?.let { country ->
+            viewModel.onSearchByCountry(country)
+            viewModel.species.observeEvent(
+                onProgress = { refreshLayout.isRefreshing = true },
+                onComplete = { refreshLayout.isRefreshing = false },
+                onError = { refreshLayout.errorSnackbar(retryAction = viewModel::onRefresh) },
+                onSuccess = adapter::submitList
+            )
+        }
     }
 
     override fun onDestroyView() {
         list.adapter = null
         super.onDestroyView()
     }
-
-    private fun refresh() = viewModel.onRefresh()
 
     private fun onSpeciesSelected(species: Species) = findNavController()
         .navigate(actionSpeciesListFragmentToSpeciesFragment(species.id))

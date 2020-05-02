@@ -24,8 +24,9 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
         emit(Event.Success(all))
     }
 
-    fun byId(context: CoroutineContext, id: Long) = liveData<Event<T>>(context) {
-        if (box[id] == null) {
+    fun byId(context: CoroutineContext, id: Long, updateIf: (T) -> Boolean = { false }) = liveData<Event<T>>(context) {
+        val entity = box[id]
+        if (entity == null || updateIf(entity)) {
             emit(Event.Progress)
             updateById(id)
         }
