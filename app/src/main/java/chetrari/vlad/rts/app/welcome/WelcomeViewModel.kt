@@ -1,4 +1,4 @@
-package chetrari.vlad.rts.app.welcome.greeting
+package chetrari.vlad.rts.app.welcome
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -8,7 +8,7 @@ import chetrari.vlad.rts.data.persistence.UserPreferences
 import chetrari.vlad.rts.data.persistence.repository.CountryRepository
 import javax.inject.Inject
 
-class GreetingViewModel @Inject constructor(
+class WelcomeViewModel @Inject constructor(
     countryRepository: CountryRepository,
     private val userPreferences: UserPreferences
 ) : BaseViewModel() {

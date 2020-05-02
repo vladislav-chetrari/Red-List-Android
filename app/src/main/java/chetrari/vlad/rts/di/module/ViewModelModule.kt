@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import chetrari.vlad.rts.app.main.countries.CountriesViewModel
 import chetrari.vlad.rts.app.main.species.SpeciesListViewModel
 import chetrari.vlad.rts.app.main.species.details.SpeciesViewModel
-import chetrari.vlad.rts.app.welcome.greeting.GreetingViewModel
+import chetrari.vlad.rts.app.welcome.WelcomeViewModel
 import chetrari.vlad.rts.di.ViewModelFactory
 import chetrari.vlad.rts.di.ViewModelKey
 import dagger.Binds
@@ -20,8 +20,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(GreetingViewModel::class)
-    internal abstract fun greetingViewModel(viewModel: GreetingViewModel): ViewModel
+    @ViewModelKey(WelcomeViewModel::class)
+    internal abstract fun greetingViewModel(viewModel: WelcomeViewModel): ViewModel
 
     @Binds
     @IntoMap

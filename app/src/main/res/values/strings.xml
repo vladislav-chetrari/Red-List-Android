@@ -36,4 +36,5 @@
     <string name="label_greeting">Welcome</string>
     <string name="label_app_description">This app is dedicated to inform people about threatened species of the world.</string>
     <string name="label_loading_countries">Loading country list</string>
+    <string name="label_species_image_gallery">Species Image Gallery</string>
 </resources>
