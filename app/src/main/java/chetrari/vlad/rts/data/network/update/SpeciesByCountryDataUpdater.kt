@@ -1,10 +1,10 @@
-package chetrari.vlad.rts.data.network.fetch
+package chetrari.vlad.rts.data.network.update
 
 import chetrari.vlad.rts.data.network.api.RedListApi
 import chetrari.vlad.rts.data.network.model.SpeciesResponse
 import chetrari.vlad.rts.data.persistence.model.Country
 import chetrari.vlad.rts.data.persistence.model.Species
-import chetrari.vlad.rts.data.type.Vulnerability
+import chetrari.vlad.rts.data.persistence.type.Vulnerability
 import io.objectbox.Box
 import javax.inject.Inject
 import javax.inject.Singleton

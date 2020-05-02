@@ -32,9 +32,12 @@ fun View.rotateAnimated(
 }
 
 fun View.toggleVisibilityAnimated(
-    animationTimeMillis: Int = resources.getInteger(android.R.integer.config_shortAnimTime)
+    animationTimeMillis: Int = resources.getInteger(android.R.integer.config_shortAnimTime),
+    onAnimationEnd: () -> Unit = {}
 ) = ifNotAnimating {
-    animate().alpha(if (alpha == 0f) 1f else 0f).withProperties(this, animationTimeMillis).start()
+    animate().alpha(if (alpha == 0f) 1f else 0f)
+        .withProperties(this, animationTimeMillis, onAnimationEnd = onAnimationEnd)
+        .start()
 }
 
 private fun View.ifNotAnimating(action: () -> Unit) {

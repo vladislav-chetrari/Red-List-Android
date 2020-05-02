@@ -2,12 +2,16 @@ package chetrari.vlad.rts.base
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.*
+import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel() {
 
     private val updatableRegistry = arrayListOf<CoroutineUpdatable>()
 
-    private val <T> LiveData<T>.mutable: MutableLiveData<T>
+    protected val context: CoroutineContext
+        get() = viewModelScope.coroutineContext
+
+    protected val <T> LiveData<T>.mutable: MutableLiveData<T>
         get() = this as MutableLiveData
 
     protected val <T> LiveData<T>.mediator: MediatorLiveData<T>
@@ -22,6 +26,8 @@ abstract class BaseViewModel : ViewModel() {
     protected fun CoroutineUpdatable.register() {
         updatableRegistry += this
     }
+
+    protected fun <T> MutableLiveData<T>.refresh() = postValue(value)
 
     protected fun updateRegistered() = updatableRegistry
         .filterIsInstance<EventLiveData<*>>()

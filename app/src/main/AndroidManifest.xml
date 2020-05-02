@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".app.welcome.WelcomeActivity" />
         <activity android:name=".app.main.MainActivity" />
         <activity android:name=".app.main.images.ImageGalleryActivity" />
     </application>

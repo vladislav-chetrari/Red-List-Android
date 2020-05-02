@@ -18,6 +18,7 @@ abstract class BaseActivity(
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
+
     @Inject
     lateinit var injector: DispatchingAndroidInjector<Any>
 
@@ -26,7 +27,10 @@ abstract class BaseActivity(
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+        observeLiveData()
     }
+
+    protected open fun observeLiveData() = Unit
 
     /*
     * usage:
@@ -36,15 +40,28 @@ abstract class BaseActivity(
         ViewModelProvider(this, factory).get(VM::class.java)
     }
 
-    protected fun <T> LiveData<Event<T>>.observe(
+    protected fun <T> LiveData<T>.observe(consumer: (T) -> Unit) = observe(this@BaseActivity, Observer(consumer))
+
+    protected fun <T> LiveData<T?>.safeObserve(consumer: (T) -> Unit) = observe(this@BaseActivity, Observer {
+        it?.let(consumer)
+    })
+
+    protected fun <T> LiveData<Event<T>>.observeEvent(
         onProgress: () -> Unit = {},
         onError: (Throwable) -> Unit = {},
-        consumer: (T) -> Unit
+        onComplete: () -> Unit = {},
+        onSuccess: (T) -> Unit
     ) = observe(this@BaseActivity, Observer {
         when (it) {
             is Event.Progress -> onProgress()
-            is Event.Error -> onError(it.error)
-            is Event.Success -> consumer(it.result)
+            is Event.Error -> {
+                onError(it.error)
+                onComplete()
+            }
+            is Event.Success -> {
+                onSuccess(it.result)
+                onComplete()
+            }
         }
     })
 }

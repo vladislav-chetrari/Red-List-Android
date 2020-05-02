@@ -1,4 +1,4 @@
-package chetrari.vlad.rts.data.network.fetch
+package chetrari.vlad.rts.data.network.update
 
 import chetrari.vlad.rts.data.network.api.RedListApi
 import chetrari.vlad.rts.data.network.model.CountriesResponse

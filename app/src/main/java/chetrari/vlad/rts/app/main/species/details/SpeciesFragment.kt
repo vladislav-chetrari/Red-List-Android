@@ -16,7 +16,7 @@ import chetrari.vlad.rts.app.main.species.details.SpeciesFragmentDirections.Comp
 import chetrari.vlad.rts.base.BaseFragment
 import chetrari.vlad.rts.data.persistence.model.Narrative
 import chetrari.vlad.rts.data.persistence.model.Species
-import chetrari.vlad.rts.data.type.Vulnerability
+import chetrari.vlad.rts.data.persistence.type.Vulnerability
 import kotlinx.android.synthetic.main.fragment_species.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -37,17 +37,20 @@ class SpeciesFragment : BaseFragment(R.layout.fragment_species) {
         refreshLayout.setOnRefreshListener(::refresh)
     }
 
-    override fun observeLiveData() = viewModel.byId(args.speciesId).observe(
-        onError = { coordinator.errorSnackbar { refresh() };Timber.w(it) },
-        onProgress = { refreshLayout.isRefreshing = true },
-        onComplete = { refreshLayout.isRefreshing = false }
-    ) {
-        collapsingToolbar.title = it.commonName
-        scientificName.value = it.scientificName
-        setupVulnerability(it.category)
-        setupImages(it)
-        setupTaxonomy(it)
-        it.narrative.target?.let(::setupNarrative)
+    override fun observeLiveData() = viewModel.run {
+        onSpeciesIdReceived(args.speciesId)
+        species.observeEvent(
+            onError = { coordinator.errorSnackbar { refresh() };Timber.w(it) },
+            onProgress = { refreshLayout.isRefreshing = true },
+            onComplete = { refreshLayout.isRefreshing = false }
+        ) {
+            collapsingToolbar.title = it.commonName
+            scientificName.value = it.scientificName
+            setupVulnerability(it.category)
+            setupImages(it)
+            setupTaxonomy(it)
+            it.narrative.target?.let(::setupNarrative)
+        }
     }
 
     private fun refresh() = viewModel.onRefresh()

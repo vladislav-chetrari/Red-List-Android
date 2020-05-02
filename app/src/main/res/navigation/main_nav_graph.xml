@@ -34,7 +34,6 @@
         tools:layout="@layout/fragment_species">
         <argument
             android:name="speciesId"
-            android:defaultValue="42294L"
             app:argType="long" />
         <action
             android:id="@+id/action_speciesFragment_to_imageGalleryActivity"
@@ -43,7 +42,7 @@
     <activity
         android:id="@+id/imageGalleryActivity"
         android:name="chetrari.vlad.rts.app.main.images.ImageGalleryActivity"
-        android:label="ImageGalleryActivity">
+        android:label="@string/label_species_image_gallery">
         <argument
             android:name="images"
             app:argType="chetrari.vlad.rts.data.persistence.model.SpeciesImage[]" />

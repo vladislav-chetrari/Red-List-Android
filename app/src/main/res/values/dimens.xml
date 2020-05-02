@@ -4,9 +4,10 @@
 
     <dimen name="content_padding_small">4dp</dimen>
     <dimen name="content_padding_medium">8dp</dimen>
-    <dimen name="content_padding_large">12dp</dimen>
+    <dimen name="content_padding_large">16dp</dimen>
     <dimen name="list_item_species_thumbnail_height">88dp</dimen>
     <dimen name="divider_height">1dp</dimen>
     <dimen name="list_item_country_flag_width">30dp</dimen>
     <dimen name="list_item_species_vulnerability_icon_size">40dp</dimen>
+    <dimen name="zero">0dp</dimen>
 </resources>

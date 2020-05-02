@@ -1,7 +1,7 @@
 package chetrari.vlad.rts.data.persistence.model
 
-import chetrari.vlad.rts.data.type.Vulnerability
-import chetrari.vlad.rts.data.type.Vulnerability.NE
+import chetrari.vlad.rts.data.persistence.type.Vulnerability
+import chetrari.vlad.rts.data.persistence.type.Vulnerability.NE
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
