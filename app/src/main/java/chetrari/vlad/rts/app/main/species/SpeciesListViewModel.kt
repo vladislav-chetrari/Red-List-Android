@@ -5,16 +5,16 @@ import androidx.lifecycle.switchMap
 import androidx.paging.PagedList
 import chetrari.vlad.rts.base.BaseViewModel
 import chetrari.vlad.rts.data.persistence.model.Country
-import chetrari.vlad.rts.data.repository.SpeciesLiveRepository
+import chetrari.vlad.rts.data.persistence.repository.SpeciesRepository
 import javax.inject.Inject
 
 class SpeciesListViewModel @Inject constructor(
-    private val liveRepository: SpeciesLiveRepository
+    private val repository: SpeciesRepository
 ) : BaseViewModel() {
 
     private val selectedCountry = MutableLiveData<Country>()
     val species = selectedCountry.switchMap {
-        liveRepository.byCountryPaged(context, pagedListConfig, it)
+        repository.byCountryPaged(context, pagedListConfig, it)
     }
 
     fun onSearchByCountry(country: Country) = selectedCountry.postValue(country)

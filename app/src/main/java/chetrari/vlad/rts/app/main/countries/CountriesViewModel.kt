@@ -3,12 +3,12 @@ package chetrari.vlad.rts.app.main.countries
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import chetrari.vlad.rts.base.BaseViewModel
-import chetrari.vlad.rts.data.repository.CountryLiveRepository
+import chetrari.vlad.rts.data.persistence.repository.CountryRepository
 import javax.inject.Inject
 
 
 class CountriesViewModel @Inject constructor(
-    private val repository: CountryLiveRepository
+    private val repository: CountryRepository
 ) : BaseViewModel() {
 
     private val refreshTrigger = MutableLiveData(Unit)

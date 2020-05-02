@@ -1,4 +1,4 @@
-package chetrari.vlad.rts.data.repository
+package chetrari.vlad.rts.data.persistence.repository
 
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map

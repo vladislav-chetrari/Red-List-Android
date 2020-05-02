@@ -1,4 +1,4 @@
-package chetrari.vlad.rts.data.network.fetch
+package chetrari.vlad.rts.data.network.update
 
 import chetrari.vlad.rts.base.Dispatcher
 import kotlinx.coroutines.withContext

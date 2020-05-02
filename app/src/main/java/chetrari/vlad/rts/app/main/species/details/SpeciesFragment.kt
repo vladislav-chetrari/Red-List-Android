@@ -16,7 +16,7 @@ import chetrari.vlad.rts.app.main.species.details.SpeciesFragmentDirections.Comp
 import chetrari.vlad.rts.base.BaseFragment
 import chetrari.vlad.rts.data.persistence.model.Narrative
 import chetrari.vlad.rts.data.persistence.model.Species
-import chetrari.vlad.rts.data.type.Vulnerability
+import chetrari.vlad.rts.data.persistence.type.Vulnerability
 import kotlinx.android.synthetic.main.fragment_species.*
 import timber.log.Timber
 import javax.inject.Inject

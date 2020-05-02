@@ -11,7 +11,7 @@ abstract class BaseViewModel : ViewModel() {
     protected val context: CoroutineContext
         get() = viewModelScope.coroutineContext
 
-    private val <T> LiveData<T>.mutable: MutableLiveData<T>
+    protected val <T> LiveData<T>.mutable: MutableLiveData<T>
         get() = this as MutableLiveData
 
     protected val <T> LiveData<T>.mediator: MediatorLiveData<T>

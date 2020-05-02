@@ -1,4 +1,4 @@
-package chetrari.vlad.rts.data.network.fetch
+package chetrari.vlad.rts.data.network.update
 
 import chetrari.vlad.rts.data.network.api.GoogleCustomSearchApi
 import chetrari.vlad.rts.data.network.model.ImageWithTitleResponse

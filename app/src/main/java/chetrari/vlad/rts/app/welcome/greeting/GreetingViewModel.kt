@@ -1,22 +1,33 @@
 package chetrari.vlad.rts.app.welcome.greeting
 
-//TODO WOOOOW NIGGUH, refactor required
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import chetrari.vlad.rts.base.BaseViewModel
+import chetrari.vlad.rts.base.Event
+import chetrari.vlad.rts.data.persistence.UserPreferences
+import chetrari.vlad.rts.data.persistence.repository.CountryRepository
 import javax.inject.Inject
 
 class GreetingViewModel @Inject constructor(
-//    private val countryRepository: CountryRepository,
-//    private val countryListDataUpdater: CountryListDataUpdater
+    countryRepository: CountryRepository,
+    private val userPreferences: UserPreferences
 ) : BaseViewModel() {
 
-//    private val k = listOf<Pair<String, suspend (Unit) -> Unit>>(
-//        "Fetching countries" to countryListDataUpdater::invoke
-//    )
-//    val progressSteps = liveData(context = context) { emit(1) }
-//    val currentStep = liveData(context = context) {
-//        k.forEachIndexed { index, pair ->
-//            emit(index.inc() to pair.first)
-//            pair.second(Unit)
-//        }
-//    }
+    //TODO add categories
+    //TODO add regions
+    val countries = countryRepository.all(context)
+    val welcomePass = liveData(userPreferences.isWelcomePassed)
+    val loadComplete: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+        var currentProgress = 0
+        fun checkLoad() = postValue(currentProgress == 1)
+        addSource(countries) {
+            if (it is Event.Success) currentProgress += 1
+            checkLoad()
+        }
+    }
+
+    fun onProceed() {
+        userPreferences.isWelcomePassed = true
+        welcomePass.mutable.postValue(true)
+    }
 }

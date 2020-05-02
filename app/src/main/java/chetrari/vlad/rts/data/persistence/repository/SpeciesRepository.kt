@@ -1,10 +1,10 @@
-package chetrari.vlad.rts.data.repository
+package chetrari.vlad.rts.data.persistence.repository
 
 import androidx.paging.PagedList
-import chetrari.vlad.rts.data.network.fetch.SpeciesByCountryDataUpdater
-import chetrari.vlad.rts.data.network.fetch.SpeciesDetailsByIdDataUpdater
-import chetrari.vlad.rts.data.network.fetch.SpeciesImageDataUpdater
-import chetrari.vlad.rts.data.network.fetch.SpeciesNarrativeByIdDataUpdater
+import chetrari.vlad.rts.data.network.update.SpeciesByCountryDataUpdater
+import chetrari.vlad.rts.data.network.update.SpeciesDetailsByIdDataUpdater
+import chetrari.vlad.rts.data.network.update.SpeciesImageDataUpdater
+import chetrari.vlad.rts.data.network.update.SpeciesNarrativeByIdDataUpdater
 import chetrari.vlad.rts.data.persistence.model.Country
 import chetrari.vlad.rts.data.persistence.model.Country_
 import chetrari.vlad.rts.data.persistence.model.Species
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 import kotlin.coroutines.CoroutineContext
 
 @Singleton
-class SpeciesLiveRepository @Inject constructor(
+class SpeciesRepository @Inject constructor(
     box: Box<Species>,
     private val byCountryDataUpdater: SpeciesByCountryDataUpdater,
     private val detailsByIdDataUpdater: SpeciesDetailsByIdDataUpdater,

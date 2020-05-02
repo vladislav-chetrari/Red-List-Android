@@ -1,6 +1,6 @@
 package chetrari.vlad.rts.data.network.model
 
-import chetrari.vlad.rts.data.type.Vulnerability
+import chetrari.vlad.rts.data.persistence.type.Vulnerability
 import com.google.gson.annotations.SerializedName
 
 data class SpeciesResponse(
