@@ -21,11 +21,17 @@
         tools:layout="@layout/fragment_list">
         <argument
             android:name="country"
+            android:defaultValue="@null"
             app:argType="chetrari.vlad.rts.data.persistence.model.Country"
             app:nullable="true" />
         <action
             android:id="@+id/action_speciesListFragment_to_speciesFragment"
             app:destination="@id/speciesFragment" />
+        <argument
+            android:name="vulnerability"
+            android:defaultValue="@null"
+            app:argType="chetrari.vlad.rts.data.persistence.type.Vulnerability"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/speciesFragment"
@@ -50,4 +56,13 @@
             android:name="title"
             app:argType="string" />
     </activity>
+    <fragment
+        android:id="@+id/destinationVulnerabilityList"
+        android:name="chetrari.vlad.rts.app.main.vulnerability.VulnerabilityListFragment"
+        android:label="@string/label_vulnerability"
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_destinationVulnerabilityList_to_speciesListFragment"
+            app:destination="@id/speciesListFragment" />
+    </fragment>
 </navigation>

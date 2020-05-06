@@ -25,13 +25,13 @@ class WelcomeActivity : BaseActivity(R.layout.activity_welcome) {
     }
 
     override fun observeLiveData() = viewModel.run {
-        welcomePass.observe { if (it) startActivity(MainActivity::class) }
+        welcomePass.observe { if (it) startActivity(MainActivity::class).also { finish() } }
         loadComplete.observe { isComplete ->
             if (isComplete) motionLayout.waitForTransitionEnd(R.id.step4) {
                 transactionToEnd(R.id.step4, R.id.end)
             }
         }
-        animateStep(viewModel.countries, R.string.label_loading_countries)
+        animateStep(countries, R.string.label_loading_countries)
     }
 
     private fun <T> animateStep(liveData: LiveData<Event<T>>, @StringRes stringResId: Int) {

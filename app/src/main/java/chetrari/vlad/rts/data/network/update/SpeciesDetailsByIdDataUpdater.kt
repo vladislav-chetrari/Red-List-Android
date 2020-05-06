@@ -32,6 +32,7 @@ class SpeciesDetailsByIdDataUpdater @Inject constructor(
     }
 
     override suspend fun map(input: Long, response: SpeciesResponse) = Species(
+        scientificName = response.scientificName,
         kingdom = response.kingdom ?: "",
         phylum = response.phylum ?: "",
         bioClass = response.bioClass ?: "",
@@ -51,7 +52,8 @@ class SpeciesDetailsByIdDataUpdater @Inject constructor(
             family = output.family
             genus = output.genus
             order = output.order
-            commonName = output.commonName
+            scientificName = output.scientificName
+            commonName = if (output.commonName.isNotBlank()) output.commonName else scientificName
             populationTrend = output.populationTrend
         }
         box.put(species)

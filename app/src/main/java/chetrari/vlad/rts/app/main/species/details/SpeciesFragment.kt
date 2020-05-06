@@ -7,15 +7,17 @@ import android.text.SpannableString
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import chetrari.vlad.rts.R
 import chetrari.vlad.rts.app.Span
 import chetrari.vlad.rts.app.extensions.errorSnackbar
+import chetrari.vlad.rts.app.extensions.load
 import chetrari.vlad.rts.app.extensions.setNavIconColor
-import chetrari.vlad.rts.app.main.MainActivity
 import chetrari.vlad.rts.app.main.species.details.SpeciesFragmentDirections.Companion.actionSpeciesFragmentToImageGalleryActivity
 import chetrari.vlad.rts.base.BaseFragment
 import chetrari.vlad.rts.data.persistence.model.Narrative
 import chetrari.vlad.rts.data.persistence.model.Species
+import chetrari.vlad.rts.data.persistence.model.SpeciesImage
 import chetrari.vlad.rts.data.persistence.type.Vulnerability
 import kotlinx.android.synthetic.main.fragment_species.*
 import timber.log.Timber
@@ -30,7 +32,7 @@ class SpeciesFragment : BaseFragment(R.layout.fragment_species) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as MainActivity).setSupportActionBar(toolbar)
+        toolbar.setupWithNavController(findNavController())
         toolbar.setNavIconColor(WHITE)
         collapsingToolbar.setExpandedTitleColor(WHITE)
         collapsingToolbar.setCollapsedTitleTextColor(WHITE)
@@ -41,8 +43,7 @@ class SpeciesFragment : BaseFragment(R.layout.fragment_species) {
         onSpeciesIdReceived(args.speciesId)
         species.observeEvent(
             onError = { coordinator.errorSnackbar { refresh() };Timber.w(it) },
-            onProgress = { refreshLayout.isRefreshing = true },
-            onComplete = { refreshLayout.isRefreshing = false }
+            onProgress = { refreshLayout.isRefreshing = it }
         ) {
             collapsingToolbar.title = it.commonName
             scientificName.value = it.scientificName
@@ -69,14 +70,7 @@ class SpeciesFragment : BaseFragment(R.layout.fragment_species) {
         val images = species.images
         if (images.isNotEmpty()) toolbarImage.run {
             load(images[0].fullSize)
-            setOnClickListener {
-                findNavController().navigate(
-                    actionSpeciesFragmentToImageGalleryActivity(
-                        images.toTypedArray(),
-                        species.commonName
-                    )
-                )
-            }
+            setOnClickListener { openGallery(species.commonName, images) }
         }
     }
 
@@ -104,4 +98,7 @@ class SpeciesFragment : BaseFragment(R.layout.fragment_species) {
             )
         }.map { getString(it.first) to it.second }
     }
+
+    private fun openGallery(title: String, images: List<SpeciesImage>) = findNavController()
+        .navigate(actionSpeciesFragmentToImageGalleryActivity(images.toTypedArray(), title))
 }

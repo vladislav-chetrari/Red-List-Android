@@ -16,7 +16,7 @@ data class Species(
     var id: Long = 0,
     @Unique
     var scientificName: String = "",
-    @Convert(converter = VulnerabilityConverter::class, dbType = Int::class)
+    @Convert(converter = VulnerabilityConverter::class, dbType = String::class)
     var category: Vulnerability = NE,
     var kingdom: String = "",
     var phylum: String = "",
@@ -32,10 +32,7 @@ data class Species(
     lateinit var narrative: ToOne<Narrative>
 }
 
-class VulnerabilityConverter : PropertyConverter<Vulnerability, Int> {
-    override fun convertToEntityProperty(databaseValue: Int?) = databaseValue?.let {
-        Vulnerability.values()[it]
-    } ?: NE
-
-    override fun convertToDatabaseValue(entityProperty: Vulnerability?) = entityProperty?.ordinal ?: 0
+class VulnerabilityConverter : PropertyConverter<Vulnerability, String> {
+    override fun convertToEntityProperty(databaseValue: String?) = databaseValue?.let { Vulnerability.valueOf(it) } ?: NE
+    override fun convertToDatabaseValue(entityProperty: Vulnerability?) = entityProperty?.toString() ?: "NE"
 }

@@ -16,6 +16,9 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
     protected open val all: List<T>
         get() = box.all
 
+    protected open val defaultParams: List<Param<*>>
+        get() = emptyList()
+
     fun all(context: CoroutineContext) = liveData(context) {
         if (box.isEmpty) {
             emit(Event.Progress)
@@ -33,7 +36,18 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
         emit(Event.Success(box[id]))
     }
 
-    protected fun byQueryOrUpdate(
+    fun byParams(context: CoroutineContext, config: PagedList.Config, vararg params: Param<*>) = byQueryPagedOrUpdate(
+        context = context,
+        config = config,
+        updateFunction = { (defaultParams + params).forEach { it.update() } },
+        dbQuery = { (defaultParams + params).forEach { it.queryBuilder(this) } })
+
+    fun byParams(context: CoroutineContext, vararg params: Param<*>) = byQueryOrUpdate(
+        context = context,
+        updateFunction = { (defaultParams + params).forEach { it.update() } },
+        dbQuery = { (defaultParams + params).forEach { it.queryBuilder(this) } })
+
+    private fun byQueryOrUpdate(
         context: CoroutineContext,
         updateFunction: suspend () -> Unit,
         dbQuery: QueryBuilder<T>.() -> Unit
@@ -45,7 +59,7 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
         emit(Event.Success(box.query(dbQuery).find()))
     }
 
-    protected fun byQueryPagedOrUpdate(
+    private fun byQueryPagedOrUpdate(
         context: CoroutineContext,
         config: PagedList.Config,
         updateFunction: suspend () -> Unit,
@@ -67,4 +81,14 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
     protected open suspend fun updateById(id: Long) {
         throw RuntimeException("updateById not defined")
     }
+
+    open inner class Param<O>(
+        private val obj: O? = null,
+        private val updater: suspend (O) -> Unit = {},
+        val queryBuilder: QueryBuilder<T>.() -> Unit
+    ) {
+        val update: suspend () -> Unit = { obj?.let { updater(it) } }
+    }
+
+    inner class QueryParam(builder: QueryBuilder<T>.() -> Unit) : Param<Unit>(queryBuilder = builder)
 }

@@ -70,20 +70,24 @@ abstract class BaseFragment(
     })
 
     protected fun <T> LiveData<Event<T>>.observeEvent(
-        onProgress: () -> Unit = {},
+        onProgress: (Boolean) -> Unit = {},
         onError: (Throwable) -> Unit = {},
         onComplete: () -> Unit = {},
         onSuccess: (T) -> Unit
     ) = observe(viewLifecycleOwner, Observer {
+        val completionHandler = {
+            onProgress(false)
+            onComplete()
+        }
         when (it) {
-            is Event.Progress -> onProgress()
+            is Event.Progress -> onProgress(true)
             is Event.Error -> {
                 onError(it.error)
-                onComplete()
+                completionHandler()
             }
             is Event.Success -> {
                 onSuccess(it.result)
-                onComplete()
+                completionHandler()
             }
         }
     })

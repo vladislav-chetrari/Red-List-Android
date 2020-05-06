@@ -15,6 +15,11 @@ interface RedListApi {
         @Path("countryIsoCode") countryIsoCode: String
     ): Call<ArrayResponse<SpeciesResponse>>
 
+    @GET("species/category/{category}")
+    fun speciesByCategory(
+        @Path("category") category: String
+    ): Call<ArrayResponse<SpeciesResponse>>
+
     @GET("species/id/{id}")
     fun detailsBySpeciesId(
         @Path("id") speciesId: Long
