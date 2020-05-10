@@ -5,6 +5,7 @@ import androidx.lifecycle.map
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import chetrari.vlad.rts.base.Event
+import chetrari.vlad.rts.data.persistence.repository.UpdateIf.*
 import io.objectbox.Box
 import io.objectbox.android.ObjectBoxDataSource
 import io.objectbox.kotlin.query
@@ -13,61 +14,93 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class LiveRepository<T>(private val box: Box<T>) {
 
-    protected open val all: List<T>
+    protected open val defaultParams = emptyList<Param<*>>()
+    private val isEmpty: Boolean
+        get() = box.isEmpty
+    open val all: List<T>
         get() = box.all
 
-    protected open val defaultParams: List<Param<*>>
-        get() = emptyList()
-
-    fun all(context: CoroutineContext) = liveData(context) {
-        if (box.isEmpty) {
+    fun all(context: CoroutineContext, updateIf: UpdateIf<List<T>> = Empty) = liveData(context) {
+        val updater: suspend () -> Unit = {
             emit(Event.Progress)
             updateAll()
+        }
+        when (updateIf) {
+            Empty -> if (isEmpty) updater()
+            Refresh -> updater()
+            is Condition -> if (updateIf.consumer(all)) updater()
         }
         emit(Event.Success(all))
     }
 
-    fun byId(context: CoroutineContext, id: Long, updateIf: (T) -> Boolean = { false }) = liveData<Event<T>>(context) {
-        val entity = box[id]
-        if (entity == null || updateIf(entity)) {
+    operator fun get(id: Long): T? = box[id]
+
+    operator fun get(context: CoroutineContext, id: Long, updateIf: UpdateIf<T> = Empty) = liveData<Event<T>>(context) {
+        val updater: suspend () -> Unit = {
             emit(Event.Progress)
             updateById(id)
         }
-        emit(Event.Success(box[id]))
+        val entity = get(id)
+        when (updateIf) {
+            Empty -> if (entity == null) updater()
+            Refresh -> updater()
+            is Condition -> if (updateIf.consumer(entity)) updater()
+        }
+        emit(Event.Success(get(id)!!))
     }
 
-    fun byParams(context: CoroutineContext, config: PagedList.Config, vararg params: Param<*>) = byQueryPagedOrUpdate(
-        context = context,
-        config = config,
-        updateFunction = { (defaultParams + params).forEach { it.update() } },
-        dbQuery = { (defaultParams + params).forEach { it.queryBuilder(this) } })
-
-    fun byParams(context: CoroutineContext, vararg params: Param<*>) = byQueryOrUpdate(
-        context = context,
-        updateFunction = { (defaultParams + params).forEach { it.update() } },
-        dbQuery = { (defaultParams + params).forEach { it.queryBuilder(this) } })
-
-    private fun byQueryOrUpdate(
+    protected fun byParamsPaged(
         context: CoroutineContext,
+        config: PagedList.Config,
+        updateIf: UpdateIf<List<T>>,
+        vararg params: Param<*>
+    ) = byQueryPaged(
+        context = context, config = config, updateIf = updateIf,
+        updateFunction = { (defaultParams + params).forEach { it.update() } },
+        dbQuery = { (defaultParams + params).forEach { it.queryBuilder(this) } })
+
+    protected fun byParams(
+        context: CoroutineContext,
+        updateIf: UpdateIf<List<T>>,
+        vararg params: Param<*>
+    ) = byQuery(
+        context = context, updateIf = updateIf,
+        updateFunction = { (defaultParams + params).forEach { it.update() } },
+        dbQuery = { (defaultParams + params).forEach { it.queryBuilder(this) } })
+
+    private fun byQuery(
+        context: CoroutineContext,
+        updateIf: UpdateIf<List<T>>,
         updateFunction: suspend () -> Unit,
         dbQuery: QueryBuilder<T>.() -> Unit
     ) = liveData<Event<List<T>>>(context) {
-        if (box.query(dbQuery).count() == 0L) {
+        val updater: suspend () -> Unit = {
             emit(Event.Progress)
             updateFunction()
+        }
+        when (updateIf) {
+            Empty -> if (box.query(dbQuery).count() == 0L) updater()
+            Refresh -> updater()
+            is Condition -> if (updateIf.consumer(box.query(dbQuery).find())) updater()
         }
         emit(Event.Success(box.query(dbQuery).find()))
     }
 
-    private fun byQueryPagedOrUpdate(
+    private fun byQueryPaged(
         context: CoroutineContext,
         config: PagedList.Config,
+        updateIf: UpdateIf<List<T>>,
         updateFunction: suspend () -> Unit,
         dbQuery: QueryBuilder<T>.() -> Unit
     ) = liveData<Event<PagedList<T>>>(context) {
-        if (box.query(dbQuery).count() == 0L) {
+        val updater: suspend () -> Unit = {
             emit(Event.Progress)
             updateFunction()
+        }
+        when (updateIf) {
+            Empty -> if (box.query(dbQuery).count() == 0L) updater()
+            Refresh -> updater()
+            is Condition -> if (updateIf.consumer(box.query(dbQuery).find())) updater()
         }
         val factory = ObjectBoxDataSource.Factory(box.query(dbQuery))
         val builder = LivePagedListBuilder(factory, config)
@@ -82,7 +115,7 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
         throw RuntimeException("updateById not defined")
     }
 
-    open inner class Param<O>(
+    protected open inner class Param<O>(
         private val obj: O? = null,
         private val updater: suspend (O) -> Unit = {},
         val queryBuilder: QueryBuilder<T>.() -> Unit
@@ -90,5 +123,5 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
         val update: suspend () -> Unit = { obj?.let { updater(it) } }
     }
 
-    inner class QueryParam(builder: QueryBuilder<T>.() -> Unit) : Param<Unit>(queryBuilder = builder)
+    protected inner class QueryParam(builder: QueryBuilder<T>.() -> Unit) : Param<Unit>(queryBuilder = builder)
 }

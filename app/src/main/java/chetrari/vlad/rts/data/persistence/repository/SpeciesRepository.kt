@@ -25,18 +25,27 @@ class SpeciesRepository @Inject constructor(
     override val defaultParams: List<Param<*>>
         get() = listOf(QueryParam { order(Species_.scientificName) })
 
-    fun byCountryPaged(context: CoroutineContext, config: PagedList.Config, country: Country) =
-        byParams(context, config, byCountry(country))
+    fun byCountryPaged(
+        context: CoroutineContext,
+        config: PagedList.Config,
+        updateIf: UpdateIf<List<Species>> = UpdateIf.Empty,
+        country: Country
+    ) = byParamsPaged(context, config, updateIf, byCountry(country))
 
-    fun byVulnerabilityPaged(context: CoroutineContext, config: PagedList.Config, vulnerability: Vulnerability) =
-        byParams(context, config, byVulnerability(vulnerability))
+    fun byVulnerabilityPaged(
+        context: CoroutineContext,
+        config: PagedList.Config,
+        updateIf: UpdateIf<List<Species>> = UpdateIf.Empty,
+        vulnerability: Vulnerability
+    ) = byParamsPaged(context, config, updateIf, byVulnerability(vulnerability))
 
     fun byCountryAndVulnerabilityPaged(
         context: CoroutineContext,
         config: PagedList.Config,
+        updateIf: UpdateIf<List<Species>> = UpdateIf.Empty,
         country: Country,
         vulnerability: Vulnerability
-    ) = byParams(context, config, byCountry(country), byVulnerability(vulnerability))
+    ) = byParamsPaged(context, config, updateIf, byCountry(country), byVulnerability(vulnerability))
 
     override suspend fun updateById(id: Long) {
         detailsByIdDataUpdater(id)
