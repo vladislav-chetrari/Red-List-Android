@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/motionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:constraintSet="@id/searchCollapsed"
+    app:layoutDescription="@xml/fragment_species_search_scene">
+
+    <include layout="@layout/fragment_list" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/searchButton"
+        style="@style/AppTheme.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/content_padding_large"
+        android:layout_marginBottom="@dimen/content_padding_large"
+        android:src="@drawable/ic_search_white_24dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/searchBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/content_padding_medium"
+        app:cardUseCompatPadding="true"
+        tools:visibility="gone">
+
+        <include layout="@layout/layout_search_box" />
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

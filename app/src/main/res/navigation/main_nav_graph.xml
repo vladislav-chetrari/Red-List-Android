@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/destinationCountries"
         android:name="chetrari.vlad.rts.app.main.countries.CountriesFragment"
-        android:label="@string/label_countries"
+        android:label="@string/countries"
         tools:layout="@layout/fragment_list">
         <action
             android:id="@+id/action_destinationCountries_to_speciesListFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/speciesListFragment"
         android:name="chetrari.vlad.rts.app.main.species.SpeciesListFragment"
-        android:label="@string/label_species_list"
+        android:label="@string/species_list"
         tools:layout="@layout/fragment_list">
         <argument
             android:name="country"
@@ -36,7 +36,7 @@
     <fragment
         android:id="@+id/speciesFragment"
         android:name="chetrari.vlad.rts.app.main.species.details.SpeciesFragment"
-        android:label="@string/label_species_details"
+        android:label="@string/species_details"
         tools:layout="@layout/fragment_species">
         <argument
             android:name="speciesId"
@@ -48,7 +48,7 @@
     <activity
         android:id="@+id/imageGalleryActivity"
         android:name="chetrari.vlad.rts.app.main.images.ImageGalleryActivity"
-        android:label="@string/label_species_image_gallery">
+        android:label="@string/species_image_gallery">
         <argument
             android:name="images"
             app:argType="chetrari.vlad.rts.data.persistence.model.SpeciesImage[]" />
@@ -59,10 +59,19 @@
     <fragment
         android:id="@+id/destinationVulnerabilityList"
         android:name="chetrari.vlad.rts.app.main.vulnerability.VulnerabilityListFragment"
-        android:label="@string/label_vulnerability"
+        android:label="@string/vulnerability"
         tools:layout="@layout/fragment_list">
         <action
             android:id="@+id/action_destinationVulnerabilityList_to_speciesListFragment"
             app:destination="@id/speciesListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/destinationSearch"
+        android:name="chetrari.vlad.rts.app.main.search.SpeciesSearchFragment"
+        android:label="@string/search"
+        tools:layout="@layout/fragment_species_search">
+        <action
+            android:id="@+id/action_destinationSearch_to_speciesFragment"
+            app:destination="@id/speciesFragment" />
     </fragment>
 </navigation>

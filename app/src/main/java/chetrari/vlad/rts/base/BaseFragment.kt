@@ -2,17 +2,22 @@ package chetrari.vlad.rts.base
 
 import android.content.Context
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
+import androidx.annotation.ColorInt
 import androidx.annotation.LayoutRes
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.ui.setupWithNavController
+import chetrari.vlad.rts.app.extensions.setNavIconColor
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
-
 
 abstract class BaseFragment(
     @LayoutRes layoutResId: Int
@@ -24,6 +29,10 @@ abstract class BaseFragment(
     @Inject
     lateinit var injector: DispatchingAndroidInjector<Any>
 
+    protected val onBackPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() = this@BaseFragment.handleOnBackPressed()
+    }
+
     override fun androidInjector() = injector
 
     override fun onAttach(context: Context) {
@@ -34,14 +43,12 @@ abstract class BaseFragment(
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeLiveData()
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
     }
 
-    /*
-    * method needs to be overridden for special back button behavior as well as parent activity's onBackPressed()
-    */
-    protected open fun onBackPressed() = true
-
     protected open fun observeLiveData() = Unit
+
+    protected open fun handleOnBackPressed() = Unit
 
     /*
     * provided ViewModel depends on fragment lifecycle!
@@ -91,4 +98,9 @@ abstract class BaseFragment(
             }
         }
     })
+
+    protected fun NavController.setupToolbar(toolbar: Toolbar, @ColorInt navIconColor: Int) {
+        toolbar.setupWithNavController(this)
+        toolbar.setNavIconColor(navIconColor)
+    }
 }

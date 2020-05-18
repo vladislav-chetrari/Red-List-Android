@@ -16,6 +16,4 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         bottomNavBar.setupWithNavController(navController)
     }
-
-    override fun onSupportNavigateUp() = navController.navigateUp()
 }

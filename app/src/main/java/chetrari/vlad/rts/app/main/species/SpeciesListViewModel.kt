@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import androidx.paging.PagedList
 import chetrari.vlad.rts.base.BaseViewModel
-import chetrari.vlad.rts.base.Event
 import chetrari.vlad.rts.data.persistence.model.Country
 import chetrari.vlad.rts.data.persistence.model.Species
 import chetrari.vlad.rts.data.persistence.repository.SpeciesRepository
@@ -31,10 +30,7 @@ class SpeciesListViewModel @Inject constructor(
 
     fun onFilter(vulnerability: Vulnerability) = this.vulnerability.postValue(vulnerability)
 
-    fun onRefresh() {
-        country.refresh()
-        vulnerability.refresh()
-    }
+    fun onRefresh() = updateIf.postValue(UpdateIf.Refresh)
 
     private fun speciesMapper(updateIf: UpdateIf<List<Species>>, country: Country?, vulnerability: Vulnerability?) = when {
         country == null && vulnerability != null -> repository.byVulnerabilityPaged(context, listConfig, updateIf, vulnerability)
@@ -46,7 +42,7 @@ class SpeciesListViewModel @Inject constructor(
             country,
             vulnerability
         )
-        else -> MutableLiveData<Event<PagedList<Species>>>()
+        else -> MutableLiveData()
     }
 
     private inner class Composite(

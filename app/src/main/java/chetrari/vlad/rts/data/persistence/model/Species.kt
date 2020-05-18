@@ -33,6 +33,6 @@ data class Species(
 }
 
 class VulnerabilityConverter : PropertyConverter<Vulnerability, String> {
-    override fun convertToEntityProperty(databaseValue: String?) = databaseValue?.let { Vulnerability.valueOf(it) } ?: NE
-    override fun convertToDatabaseValue(entityProperty: Vulnerability?) = entityProperty?.toString() ?: "NE"
+    override fun convertToEntityProperty(databaseValue: String?) = databaseValue?.let(Vulnerability::valueOf) ?: NE
+    override fun convertToDatabaseValue(entityProperty: Vulnerability?) = (entityProperty ?: NE).toString()
 }

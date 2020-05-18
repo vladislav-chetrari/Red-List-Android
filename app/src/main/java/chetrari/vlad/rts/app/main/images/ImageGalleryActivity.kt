@@ -46,7 +46,7 @@ class ImageGalleryActivity : AppCompatActivity(R.layout.activity_image_gallery) 
 
     private fun share() {
         val imageUrl = args.images[pager.currentItem].fullSize
-        startActivity(Intent.createChooser(Intents.shareText(imageUrl), getString(R.string.label_share)))
+        startActivity(Intent.createChooser(Intents.shareText(imageUrl), getString(R.string.share)))
     }
 
     private fun trueAnd(action: () -> Unit): Boolean {

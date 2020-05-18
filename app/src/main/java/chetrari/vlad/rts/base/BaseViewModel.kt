@@ -19,5 +19,7 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun <T> mediatorLiveData(setup: MediatorLiveData<T>.() -> Unit): LiveData<T> = MediatorLiveData<T>().apply(setup)
 
-    protected fun <T> MutableLiveData<T>.refresh() = postValue(value)
+    protected fun <T> MutableLiveData<T>.rePostValue() {
+        value?.let(::postValue)
+    }
 }

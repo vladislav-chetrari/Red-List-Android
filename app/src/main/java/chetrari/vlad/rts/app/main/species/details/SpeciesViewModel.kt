@@ -13,7 +13,9 @@ class SpeciesViewModel @Inject constructor(
     private val repository: SpeciesRepository
 ) : BaseViewModel() {
 
-    private val updateIf = MutableLiveData<UpdateIf<Species>>(UpdateIf.Empty)
+    private val updateIf = MutableLiveData<UpdateIf<Species>>(UpdateIf.Condition {
+        it == null || it.commonName.isBlank() || it.scientificName == it.commonName
+    })
     private val speciesId = MutableLiveData<Long>()
     private val composite = MediatorLiveData<Composite>().apply {
         addSource(updateIf) { postValue(Composite(updateIf = it)) }

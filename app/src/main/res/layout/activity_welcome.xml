@@ -16,7 +16,7 @@
         android:id="@+id/greeting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_greeting"
+        android:text="@string/greeting"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/colorPrimaryDark" />
@@ -25,7 +25,7 @@
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_app_description"
+        android:text="@string/app_description"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
@@ -46,6 +46,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/proceed"
+        style="@style/AppTheme.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_forward_white_24dp" />

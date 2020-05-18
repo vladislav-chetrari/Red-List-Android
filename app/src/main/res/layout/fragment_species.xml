@@ -57,62 +57,62 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:enlarged="true"
-                    app:keyText="@string/label_scientific_name" />
+                    app:keyText="@string/scientific_name" />
 
                 <chetrari.vlad.rts.app.widget.KeyValuePairView
                     android:id="@+id/vulnerability"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:enlarged="true"
-                    app:keyText="@string/label_vulnerability" />
+                    app:keyText="@string/vulnerability" />
 
                 <chetrari.vlad.rts.app.widget.KeyValuePairsParagraphView
                     android:id="@+id/taxonomy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="@string/label_taxonomy" />
+                    app:title="@string/taxonomy" />
 
                 <chetrari.vlad.rts.app.widget.ParagraphView
                     android:id="@+id/taxonomicNotes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:titleText="@string/label_taxonomic_notes" />
+                    app:titleText="@string/taxonomic_notes" />
 
                 <chetrari.vlad.rts.app.widget.ParagraphView
                     android:id="@+id/justification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:titleText="@string/label_justification" />
+                    app:titleText="@string/justification" />
 
                 <chetrari.vlad.rts.app.widget.ParagraphView
                     android:id="@+id/geographicRange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:titleText="@string/label_geographic_range" />
+                    app:titleText="@string/geographic_range" />
 
                 <chetrari.vlad.rts.app.widget.ParagraphView
                     android:id="@+id/population"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:titleText="@string/label_population" />
+                    app:titleText="@string/population" />
 
                 <chetrari.vlad.rts.app.widget.ParagraphView
                     android:id="@+id/habitatAndEcology"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:titleText="@string/label_habitat_and_ecology" />
+                    app:titleText="@string/habitat_and_ecology" />
 
                 <chetrari.vlad.rts.app.widget.ParagraphView
                     android:id="@+id/threats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:titleText="@string/label_threats" />
+                    app:titleText="@string/threats" />
 
                 <chetrari.vlad.rts.app.widget.ParagraphView
                     android:id="@+id/conservationActions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:titleText="@string/label_conservation_actions" />
+                    app:titleText="@string/conservation_actions" />
 
             </LinearLayout>
 

@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.setupWithNavController
 import chetrari.vlad.rts.R
+import chetrari.vlad.rts.app.extensions.doOnDestroy
 import chetrari.vlad.rts.app.extensions.errorSnackbar
-import chetrari.vlad.rts.app.extensions.setNavIconColor
 import chetrari.vlad.rts.app.main.species.SpeciesListFragmentDirections.Companion.actionSpeciesListFragmentToSpeciesFragment
 import chetrari.vlad.rts.base.BaseFragment
 import chetrari.vlad.rts.data.persistence.model.Species
@@ -23,9 +22,9 @@ class SpeciesListFragment : BaseFragment(R.layout.fragment_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbar.setupWithNavController(findNavController())
-        toolbar.setNavIconColor(Color.WHITE)
+        findNavController().setupToolbar(toolbar, Color.WHITE)
         list.adapter = adapter
+        doOnDestroy { list.adapter = null }
         refreshLayout.setOnRefreshListener(viewModel::onRefresh)
     }
 
@@ -37,11 +36,6 @@ class SpeciesListFragment : BaseFragment(R.layout.fragment_list) {
             onError = { refreshLayout.errorSnackbar(retryAction = viewModel::onRefresh) },
             onSuccess = adapter::submitList
         )
-    }
-
-    override fun onDestroyView() {
-        list.adapter = null
-        super.onDestroyView()
     }
 
     private fun onSpeciesSelected(species: Species) = findNavController()

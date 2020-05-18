@@ -7,12 +7,10 @@ import android.text.SpannableString
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.setupWithNavController
 import chetrari.vlad.rts.R
 import chetrari.vlad.rts.app.Span
 import chetrari.vlad.rts.app.extensions.errorSnackbar
 import chetrari.vlad.rts.app.extensions.load
-import chetrari.vlad.rts.app.extensions.setNavIconColor
 import chetrari.vlad.rts.app.main.species.details.SpeciesFragmentDirections.Companion.actionSpeciesFragmentToImageGalleryActivity
 import chetrari.vlad.rts.base.BaseFragment
 import chetrari.vlad.rts.data.persistence.model.Narrative
@@ -32,8 +30,7 @@ class SpeciesFragment : BaseFragment(R.layout.fragment_species) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbar.setupWithNavController(findNavController())
-        toolbar.setNavIconColor(WHITE)
+        findNavController().setupToolbar(toolbar, WHITE)
         collapsingToolbar.setExpandedTitleColor(WHITE)
         collapsingToolbar.setCollapsedTitleTextColor(WHITE)
         refreshLayout.setOnRefreshListener(::refresh)
@@ -89,12 +86,12 @@ class SpeciesFragment : BaseFragment(R.layout.fragment_species) {
     private fun setupTaxonomy(species: Species) {
         taxonomy.data = with(species) {
             listOf(
-                R.string.label_kingdom to kingdom,
-                R.string.label_phylum to phylum,
+                R.string.kingdom to kingdom,
+                R.string.phylum to phylum,
                 R.string.label_class to bioClass,
-                R.string.label_order to order,
-                R.string.label_family to family,
-                R.string.label_genus to genus
+                R.string.order to order,
+                R.string.family to family,
+                R.string.genus to genus
             )
         }.map { getString(it.first) to it.second }
     }

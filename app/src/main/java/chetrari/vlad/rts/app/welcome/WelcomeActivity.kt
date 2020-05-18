@@ -1,12 +1,12 @@
 package chetrari.vlad.rts.app.welcome
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import chetrari.vlad.rts.R
-import chetrari.vlad.rts.app.extensions.startActivity
 import chetrari.vlad.rts.app.extensions.toggleVisibilityAnimated
 import chetrari.vlad.rts.app.extensions.transactionToEnd
 import chetrari.vlad.rts.app.extensions.waitForTransitionEnd
@@ -25,13 +25,13 @@ class WelcomeActivity : BaseActivity(R.layout.activity_welcome) {
     }
 
     override fun observeLiveData() = viewModel.run {
-        welcomePass.observe { if (it) startActivity(MainActivity::class).also { finish() } }
+        welcomePass.observe { if (it) proceed() }
         loadComplete.observe { isComplete ->
             if (isComplete) motionLayout.waitForTransitionEnd(R.id.step4) {
                 transactionToEnd(R.id.step4, R.id.end)
             }
         }
-        animateStep(countries, R.string.label_loading_countries)
+        animateStep(countries, R.string.loading_countries)
     }
 
     private fun <T> animateStep(liveData: LiveData<Event<T>>, @StringRes stringResId: Int) {
@@ -46,5 +46,10 @@ class WelcomeActivity : BaseActivity(R.layout.activity_welcome) {
                 progressContainer.removeView(textView)
             }
         }
+    }
+
+    private fun proceed() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

@@ -9,5 +9,10 @@
     <item
         android:id="@+id/destinationVulnerabilityList"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/label_vulnerability" />
+        android:title="@string/vulnerability" />
+
+    <item
+        android:id="@+id/destinationSearch"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/search" />
 </menu>

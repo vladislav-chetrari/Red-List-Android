@@ -13,8 +13,6 @@ class WelcomeViewModel @Inject constructor(
     private val userPreferences: UserPreferences
 ) : BaseViewModel() {
 
-    //TODO add categories
-    //TODO add regions
     val countries = countryRepository.all(context)
     val welcomePass = mutableLiveData(userPreferences.isWelcomePassed)
     val loadComplete: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {

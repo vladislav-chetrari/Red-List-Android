@@ -2,6 +2,7 @@ package chetrari.vlad.rts.app
 
 import android.content.res.Resources
 import android.graphics.Typeface
+import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
@@ -17,6 +18,8 @@ class Span @Inject constructor(private val resources: Resources) {
         get() = StyleSpan(Typeface.BOLD)
 
     fun foreground(@ColorRes colorResId: Int) = ForegroundColorSpan(getColor(resources, colorResId, null))
+
+    fun background(@ColorRes colorResId: Int) = BackgroundColorSpan(getColor(resources, colorResId, null))
 
     fun relativeSize(multiplier: Float) = RelativeSizeSpan(multiplier)
 }

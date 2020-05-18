@@ -3,6 +3,7 @@ package chetrari.vlad.rts.di.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import chetrari.vlad.rts.app.main.countries.CountriesViewModel
+import chetrari.vlad.rts.app.main.search.SpeciesSearchViewModel
 import chetrari.vlad.rts.app.main.species.SpeciesListViewModel
 import chetrari.vlad.rts.app.main.species.details.SpeciesViewModel
 import chetrari.vlad.rts.app.welcome.WelcomeViewModel
@@ -37,4 +38,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SpeciesViewModel::class)
     internal abstract fun speciesViewModel(viewModel: SpeciesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SpeciesSearchViewModel::class)
+    internal abstract fun speciesSearchViewModel(viewModel: SpeciesSearchViewModel): ViewModel
 }

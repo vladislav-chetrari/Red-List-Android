@@ -1,23 +1,23 @@
 <resources>
 
-    <style name="AppTheme.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <item name="colorControlNormal">@android:color/white</item>
-    </style>
-
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarTheme">@style/AppTheme.ActionBar</item>
     </style>
 
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+
+    <style name="AppTheme.ActionBar" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
     <style name="AppTheme.ExpandedToolbarTitle" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
         <item name="android:shadowRadius">8</item>
         <item name="android:shadowColor">@android:color/black</item>
-    </style>
-
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
     <style name="HorizontalProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
@@ -29,6 +29,11 @@
     <style name="ListItemContainer">
         <item name="android:padding">@dimen/content_padding_medium</item>
         <item name="android:foreground">?selectableItemBackground</item>
+    </style>
+
+    <style name="AppTheme.FloatingActionButton">
+        <item name="tint">@android:color/white</item>
+        <item name="backgroundTint">@color/colorAccent</item>
     </style>
 
 </resources>

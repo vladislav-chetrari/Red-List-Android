@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        app:constraintSetEnd="@id/searchExpanded"
+        app:constraintSetStart="@id/searchCollapsed"
+        app:duration="@android:integer/config_longAnimTime">
+        <OnClick app:targetId="@id/searchButton" />
+    </Transition>
+
+    <Transition
+        app:constraintSetEnd="@id/searchCollapsed"
+        app:constraintSetStart="@id/searchExpanded"
+        app:duration="@android:integer/config_longAnimTime">
+        <OnClick app:targetId="@id/confirm" />
+    </Transition>
+
+    <Transition
+        app:constraintSetEnd="@id/searchCollapsed"
+        app:constraintSetStart="@id/searchExpanded"
+        app:duration="@android:integer/config_longAnimTime">
+        <OnClick app:targetId="@id/cancel" />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/searchCollapsed">
+        <Constraint android:id="@id/searchButton">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/content_padding_large"
+                android:layout_marginBottom="@dimen/content_padding_large"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+            <PropertySet android:visibility="visible" />
+        </Constraint>
+        <Constraint android:id="@id/searchBox">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent" />
+            <PropertySet android:visibility="gone" />
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/searchExpanded">
+        <Constraint android:id="@id/searchButton">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+            <PropertySet android:visibility="gone" />
+        </Constraint>
+        <Constraint android:id="@id/searchBox">
+            <Layout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent" />
+            <PropertySet android:visibility="visible" />
+        </Constraint>
+    </ConstraintSet>
+
+</MotionScene>

@@ -1,10 +1,11 @@
 package chetrari.vlad.rts.app.main.countries
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import chetrari.vlad.rts.R
+import chetrari.vlad.rts.app.extensions.doOnDestroy
 import chetrari.vlad.rts.app.extensions.errorSnackbar
 import chetrari.vlad.rts.app.main.countries.CountriesFragmentDirections.Companion.actionDestinationCountriesToSpeciesListFragment
 import chetrari.vlad.rts.base.BaseFragment
@@ -19,8 +20,9 @@ class CountriesFragment : BaseFragment(R.layout.fragment_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbar.setupWithNavController(findNavController())
+        findNavController().setupToolbar(toolbar, Color.WHITE)
         list.adapter = adapter
+        doOnDestroy { list.adapter = null }
         refreshLayout.setOnRefreshListener(viewModel::onRefresh)
     }
 
@@ -29,11 +31,6 @@ class CountriesFragment : BaseFragment(R.layout.fragment_list) {
         onError = { container.errorSnackbar(retryAction = viewModel::onRefresh) },
         onSuccess = adapter::submitList
     )
-
-    override fun onDestroyView() {
-        list.adapter = null
-        super.onDestroyView()
-    }
 
     private fun onCountrySelected(country: Country) = findNavController()
         .navigate(actionDestinationCountriesToSpeciesListFragment(country))
