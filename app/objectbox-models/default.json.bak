@@ -29,7 +29,7 @@
     },
     {
       "id": "2:6952749619555742966",
-      "lastPropertyId": "16:9191670685824994174",
+      "lastPropertyId": "17:448602491176625957",
       "name": "Species",
       "properties": [
         {
@@ -103,6 +103,11 @@
           "name": "watching",
           "type": 1,
           "flags": 4
+        },
+        {
+          "id": "17:448602491176625957",
+          "name": "webLink",
+          "type": 9
         }
       ],
       "relations": [
