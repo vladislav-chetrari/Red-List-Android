@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Red List of Threatened Species</string>
+    <string name="app_name">Red List</string>
     <string name="app_description">This app is dedicated to inform people about threatened species of the world.</string>
 
     <string name="countries">Countries</string>
