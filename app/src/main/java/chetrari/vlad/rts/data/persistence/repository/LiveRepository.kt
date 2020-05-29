@@ -7,41 +7,43 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import chetrari.vlad.rts.base.Event
 import chetrari.vlad.rts.base.Event.Success
-import chetrari.vlad.rts.data.persistence.repository.UpdateIf.*
+import chetrari.vlad.rts.data.persistence.repository.UpdateOption.*
 import io.objectbox.Box
 import io.objectbox.Property
 import io.objectbox.android.ObjectBoxDataSource
 import io.objectbox.android.ObjectBoxLiveData
+import io.objectbox.kotlin.query
 import io.objectbox.query.QueryBuilder
 import kotlin.coroutines.CoroutineContext
 
 abstract class LiveRepository<T>(private val box: Box<T>) {
 
-    protected open val orderBy: Property<T>? = null
+    protected abstract val defaultOrderByProperty: Property<T>
+    protected abstract val idProperty: Property<T>
 
     private val isEmpty: Boolean
         get() = box.isEmpty
     open val all: List<T>
-        get() = box.all
+        get() = box.query { order(defaultOrderByProperty) }.find()
 
-    fun all(context: CoroutineContext, updateIf: UpdateIf<List<T>> = Empty) = liveData<Event<List<T>>>(context) {
+    fun all(context: CoroutineContext, updateOption: UpdateOption<List<T>> = OnEmpty) = liveData<Event<List<T>>>(context) {
         var isAlright = true
         val updater: suspend () -> Unit = {
             emit(Event.Progress)
-            doCatching { updateAll() }
+            doCatching(::updateAll)
             isAlright = latestValue !is Event.Error
         }
-        when (updateIf) {
-            Empty -> if (isEmpty) updater()
-            Refresh -> updater()
-            is Condition -> if (updateIf.consumer(all)) updater()
+        when (updateOption) {
+            OnEmpty -> if (isEmpty) updater()
+            Immediate -> updater()
+            is Condition -> if (updateOption.consumer(all)) updater()
         }
-        if (isAlright) emit(Success(all))
+        if (isAlright) emitSource(ObjectBoxLiveData(box.query { order(defaultOrderByProperty) }).map { Success(it) })
     }
 
     operator fun get(id: Long): T? = box[id]
 
-    operator fun get(context: CoroutineContext, id: Long, updateIf: UpdateIf<T> = Empty) = liveData<Event<T>>(context) {
+    operator fun get(context: CoroutineContext, id: Long, updateOption: UpdateOption<T> = OnEmpty) = liveData<Event<T>>(context) {
         var isAlright = true
         val updater: suspend () -> Unit = {
             emit(Event.Progress)
@@ -49,25 +51,25 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
             isAlright = latestValue !is Event.Error
         }
         val entity = get(id)
-        when (updateIf) {
-            Empty -> if (entity == null) updater()
-            Refresh -> updater()
-            is Condition -> if (updateIf.consumer(entity)) updater()
+        when (updateOption) {
+            OnEmpty -> if (entity == null) updater()
+            Immediate -> updater()
+            is Condition -> if (updateOption.consumer(entity)) updater()
         }
-        if (isAlright) emit(Success(get(id)!!))
+        if (isAlright) emitSource(ObjectBoxLiveData(box.query { equal(idProperty, id) }).map { Success(it.first()) })
     }
 
     protected fun byParamsPaged(
         context: CoroutineContext,
         config: PagedList.Config,
-        updateIf: UpdateIf<List<T>>,
+        updateOption: UpdateOption<List<T>>,
         vararg params: Param<*>
     ) = byQueryPaged(
-        context = context, config = config, updateIf = updateIf,
+        context = context, config = config, updateOption = updateOption,
         updateFunction = { params.forEach { it.update() } },
         queryBuilder = {
             val blocks = params.map { it.queryBuilder }
-            var builder = orderBy?.let { order(it) } ?: this
+            var builder = this
             if (params.isNotEmpty()) {
                 blocks.forEach { builder = it(builder) }
             }
@@ -76,14 +78,14 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
 
     protected fun byParams(
         context: CoroutineContext,
-        updateIf: UpdateIf<List<T>>,
+        updateOption: UpdateOption<List<T>>,
         vararg params: Param<*>
     ) = byQuery(
-        context = context, updateIf = updateIf,
+        context = context, updateOption = updateOption,
         updateFunction = { params.forEach { it.update() } },
         queryBuilder = {
             val blocks = params.map { it.queryBuilder }
-            var builder = orderBy?.let { order(it) } ?: this
+            var builder = this
             if (params.isNotEmpty()) {
                 blocks.forEach { builder = it(builder) }
             }
@@ -92,7 +94,7 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
 
     private fun byQuery(
         context: CoroutineContext,
-        updateIf: UpdateIf<List<T>>,
+        updateOption: UpdateOption<List<T>>,
         updateFunction: suspend () -> Unit,
         queryBuilder: QueryBuilder<T>.() -> QueryBuilder<T>
     ) = liveData<Event<List<T>>>(context) {
@@ -103,10 +105,10 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
             doCatching(updateFunction)
             isAlright = latestValue !is Event.Error
         }
-        when (updateIf) {
-            Empty -> if (query().count() == 0L) updater()
-            Refresh -> updater()
-            is Condition -> if (updateIf.consumer(query().find())) updater()
+        when (updateOption) {
+            OnEmpty -> if (query().count() == 0L) updater()
+            Immediate -> updater()
+            is Condition -> if (updateOption.consumer(query().find())) updater()
         }
         if (isAlright) emitSource(ObjectBoxLiveData(query()).map { Success(it) })
     }
@@ -114,7 +116,7 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
     private fun byQueryPaged(
         context: CoroutineContext,
         config: PagedList.Config,
-        updateIf: UpdateIf<List<T>>,
+        updateOption: UpdateOption<List<T>>,
         updateFunction: suspend () -> Unit,
         queryBuilder: QueryBuilder<T>.() -> QueryBuilder<T>
     ) = liveData<Event<PagedList<T>>>(context) {
@@ -125,10 +127,10 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
             doCatching(updateFunction)
             isAlright = latestValue !is Event.Error
         }
-        when (updateIf) {
-            Empty -> if (query().count() == 0L) updater()
-            Refresh -> updater()
-            is Condition -> if (updateIf.consumer(query().find())) updater()
+        when (updateOption) {
+            OnEmpty -> if (query().count() == 0L) updater()
+            Immediate -> updater()
+            is Condition -> if (updateOption.consumer(query().find())) updater()
         }
         if (isAlright) {
             val factory = ObjectBoxDataSource.Factory(query())

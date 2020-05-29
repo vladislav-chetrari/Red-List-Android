@@ -41,19 +41,20 @@ class SpeciesListAdapter(
         private val span = Span(containerView.resources)
 
         fun bind(species: Species?, highlightedText: String) {
-            scientificName.text = SpannableString(species?.scientificName ?: "").apply {
+            species ?: return
+            scientificName.text = SpannableString(species.scientificName).apply {
                 if (contains(highlightedText, true)) {
                     val startIndex = indexOf(highlightedText, ignoreCase = true)
                     val endIndex = startIndex + highlightedText.length
                     setSpan(span.background(R.color.yellow400), startIndex, endIndex, SPAN_INCLUSIVE_EXCLUSIVE)
                 }
             }
-            species?.category?.let {
+            species.category.let {
                 val color = ResourcesCompat.getColor(containerView.resources, it.colorResId, null)
                 vulnerability.backgroundTintList = ColorStateList.valueOf(color)
                 vulnerability.text = "$it"
             }
-            species?.let { containerView.setOnClickListener { _ -> onSpeciesSelected(it) } }
+            containerView.setOnClickListener { onSpeciesSelected(species) }
         }
     }
 

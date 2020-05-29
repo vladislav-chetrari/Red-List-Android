@@ -15,4 +15,9 @@
         android:id="@+id/destinationSearch"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/search" />
+
+    <item
+        android:id="@+id/destinationWatching"
+        android:icon="@drawable/ic_visibility_on_white_24dp"
+        android:title="@string/watching" />
 </menu>

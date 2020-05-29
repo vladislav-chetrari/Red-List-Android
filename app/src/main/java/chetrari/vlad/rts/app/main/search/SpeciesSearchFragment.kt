@@ -32,7 +32,7 @@ class SpeciesSearchFragment : BaseFragment(R.layout.fragment_species_search) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        findNavController().setupToolbar(toolbar, Color.WHITE)
+        findNavController().setupToolbar(toolbar)
         list.adapter = speciesAdapter
         refreshLayout.setOnRefreshListener(viewModel::onRefresh)
         doOnDestroy { list.adapter = null }

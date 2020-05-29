@@ -48,7 +48,8 @@
     <activity
         android:id="@+id/imageGalleryActivity"
         android:name="chetrari.vlad.rts.app.main.images.ImageGalleryActivity"
-        android:label="@string/species_image_gallery">
+        android:label="@string/species_image_gallery"
+        tools:layout="@layout/activity_image_gallery">
         <argument
             android:name="images"
             app:argType="chetrari.vlad.rts.data.persistence.model.SpeciesImage[]" />
@@ -72,6 +73,15 @@
         tools:layout="@layout/fragment_species_search">
         <action
             android:id="@+id/action_destinationSearch_to_speciesFragment"
+            app:destination="@id/speciesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/destinationWatching"
+        android:name="chetrari.vlad.rts.app.main.watching.WatchingSpeciesFragment"
+        android:label="@string/watching"
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_watchingSpeciesFragment_to_speciesFragment"
             app:destination="@id/speciesFragment" />
     </fragment>
 </navigation>

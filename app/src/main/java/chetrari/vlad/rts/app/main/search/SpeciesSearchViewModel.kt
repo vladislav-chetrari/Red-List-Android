@@ -8,7 +8,7 @@ import chetrari.vlad.rts.base.BaseViewModel
 import chetrari.vlad.rts.data.persistence.model.Country
 import chetrari.vlad.rts.data.persistence.repository.CountryRepository
 import chetrari.vlad.rts.data.persistence.repository.SpeciesRepository
-import chetrari.vlad.rts.data.persistence.repository.UpdateIf
+import chetrari.vlad.rts.data.persistence.repository.UpdateOption
 import chetrari.vlad.rts.data.persistence.type.Vulnerability
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ class SpeciesSearchViewModel @Inject constructor(
     private val searchQuery = MutableLiveData(SpeciesRepository.Query())
     val vulnerabilityTypes = mutableLiveData(Vulnerability.values().toList().filter { it != Vulnerability.NE })
     val countryNames = countries.map { it.map(Country::name) }
-    val species = searchQuery.switchMap { speciesRepository.byQueryPaged(context, listConfig, UpdateIf.Refresh, it) }
+    val species = searchQuery.switchMap { speciesRepository.byQueryPaged(context, listConfig, UpdateOption.Immediate, it) }
 
     fun onSearch(speciesName: String, countryNames: List<String>, vulnerability: List<String>) {
         val selectedCountries = countries.value!!.filter { countryNames.contains(it.name) }

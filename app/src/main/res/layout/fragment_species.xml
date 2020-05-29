@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -119,5 +120,41 @@
         </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:orientation="horizontal">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/watch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/content_padding_large"
+            android:layout_marginTop="@dimen/content_padding_large"
+            android:layout_marginBottom="@dimen/content_padding_large"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/watch"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            app:icon="@drawable/ic_visibility_on_white_24dp"
+            app:iconTint="@android:color/white"
+            tools:visibility="visible" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/webLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/content_padding_large"
+            android:backgroundTint="@color/colorAccent"
+            android:visibility="gone"
+            app:icon="@drawable/ic_link_white_24dp"
+            app:iconTint="@android:color/white"
+            tools:visibility="visible" />
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

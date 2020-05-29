@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.ColorInt
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.ui.setupWithNavController
+import chetrari.vlad.rts.R
 import chetrari.vlad.rts.app.extensions.setNavIconColor
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -99,8 +101,11 @@ abstract class BaseFragment(
         }
     })
 
-    protected fun NavController.setupToolbar(toolbar: Toolbar, @ColorInt navIconColor: Int) {
+    protected fun NavController.setupToolbar(
+        toolbar: Toolbar,
+        @ColorInt color: Int = ResourcesCompat.getColor(resources, R.color.colorPrimaryDark, null)
+    ) {
         toolbar.setupWithNavController(this)
-        toolbar.setNavIconColor(navIconColor)
+        toolbar.setNavIconColor(color)
     }
 }

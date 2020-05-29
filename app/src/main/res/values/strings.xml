@@ -42,4 +42,8 @@
     <string name="cancel">Cancel</string>
     <string name="search_by">Search by</string>
     <string name="species_name">Species Name</string>
+    <string name="pattern_hyphenated_text_pair">%s - %s</string>
+    <string name="watch">Watch</string>
+    <string name="unwatch">Unwatch</string>
+    <string name="watching">Watching</string>
 </resources>

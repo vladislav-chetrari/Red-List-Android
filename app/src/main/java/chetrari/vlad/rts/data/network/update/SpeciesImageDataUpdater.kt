@@ -30,6 +30,11 @@ class SpeciesImageDataUpdater @Inject constructor(
             .map { it.image }
             .map { (it.thumbnail.firstOrNull()?.src ?: "") to (it.fullSize.firstOrNull()?.src ?: "") }
             .filter { it.first.isNotBlank() || it.second.isNotBlank() }
+            .map {
+                if (it.first.isBlank() && it.second.isNotBlank()) it.second to it.second
+                else if (it.first.isNotBlank() && it.second.isBlank()) it.first to it.first
+                else it
+            }
             .map { SpeciesImage(thumbnail = it.first, fullSize = it.second) }
             .toList()
     }

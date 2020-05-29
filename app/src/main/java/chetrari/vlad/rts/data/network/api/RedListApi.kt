@@ -39,4 +39,9 @@ interface RedListApi {
     fun narrativeBySpeciesId(
         @Path("id") speciesId: Long
     ): Call<ArrayResponse<SpeciesNarrativeResponse>>
+
+    @GET("weblink/{name}")
+    fun webLinkBySpeciesScientificName(
+        @Path("name") scientificName: String
+    ): Call<SpeciesWebLinkResponse>
 }

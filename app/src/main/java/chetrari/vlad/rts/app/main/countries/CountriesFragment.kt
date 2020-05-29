@@ -1,6 +1,5 @@
 package chetrari.vlad.rts.app.main.countries
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
@@ -20,7 +19,7 @@ class CountriesFragment : BaseFragment(R.layout.fragment_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        findNavController().setupToolbar(toolbar, Color.WHITE)
+        findNavController().setupToolbar(toolbar)
         list.adapter = adapter
         doOnDestroy { list.adapter = null }
         refreshLayout.setOnRefreshListener(viewModel::onRefresh)

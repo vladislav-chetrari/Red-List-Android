@@ -6,6 +6,7 @@ import chetrari.vlad.rts.app.main.countries.CountriesViewModel
 import chetrari.vlad.rts.app.main.search.SpeciesSearchViewModel
 import chetrari.vlad.rts.app.main.species.SpeciesListViewModel
 import chetrari.vlad.rts.app.main.species.details.SpeciesViewModel
+import chetrari.vlad.rts.app.main.watching.WatchingViewModel
 import chetrari.vlad.rts.app.welcome.WelcomeViewModel
 import chetrari.vlad.rts.di.ViewModelFactory
 import chetrari.vlad.rts.di.ViewModelKey
@@ -43,4 +44,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SpeciesSearchViewModel::class)
     internal abstract fun speciesSearchViewModel(viewModel: SpeciesSearchViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(WatchingViewModel::class)
+    internal abstract fun watchingViewModel(viewModel: WatchingViewModel): ViewModel
 }

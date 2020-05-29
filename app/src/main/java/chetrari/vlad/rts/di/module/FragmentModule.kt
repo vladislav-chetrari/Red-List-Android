@@ -4,6 +4,7 @@ import chetrari.vlad.rts.app.main.countries.CountriesFragment
 import chetrari.vlad.rts.app.main.search.SpeciesSearchFragment
 import chetrari.vlad.rts.app.main.species.SpeciesListFragment
 import chetrari.vlad.rts.app.main.species.details.SpeciesFragment
+import chetrari.vlad.rts.app.main.watching.WatchingSpeciesFragment
 import chetrari.vlad.rts.di.FragmentScoped
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -26,4 +27,8 @@ abstract class FragmentModule {
     @FragmentScoped
     @ContributesAndroidInjector
     abstract fun speciesSearchFragment(): SpeciesSearchFragment
+
+    @FragmentScoped
+    @ContributesAndroidInjector
+    abstract fun watchingFragment(): WatchingSpeciesFragment
 }

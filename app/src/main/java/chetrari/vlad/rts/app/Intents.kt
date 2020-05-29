@@ -3,8 +3,10 @@ package chetrari.vlad.rts.app
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.*
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
@@ -15,9 +17,9 @@ import java.io.File
 object Intents {
 
     fun shareText(text: String) = Intent().apply {
-        action = Intent.ACTION_SEND
+        action = ACTION_SEND
         type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, text)
+        putExtra(EXTRA_TEXT, text)
     }
 
     //FIXME (without permissions, save to images or get uri from picasso somehow)
@@ -51,12 +53,16 @@ object Intents {
                     onError(Throwable())
                     return
                 }
-                val intent = Intent(Intent.ACTION_SEND).apply {
+                val intent = Intent(ACTION_SEND).apply {
                     type = "image/*"
-                    putExtra(Intent.EXTRA_STREAM, uri)
+                    putExtra(EXTRA_STREAM, uri)
                 }
                 onIntentReady(intent)
             }
         })
+    }
+
+    fun webUrl(url: String) = Intent(ACTION_VIEW).apply {
+        data = Uri.parse(url)
     }
 }

@@ -12,7 +12,7 @@
     </style>
 
     <style name="AppTheme.ActionBar" parent="ThemeOverlay.MaterialComponents.ActionBar">
-        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlNormal">@color/colorPrimaryDark</item>
     </style>
 
     <style name="AppTheme.ExpandedToolbarTitle" parent="TextAppearance.Design.CollapsingToolbar.Expanded">

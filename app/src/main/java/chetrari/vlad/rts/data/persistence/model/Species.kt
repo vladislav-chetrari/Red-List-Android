@@ -25,7 +25,9 @@ data class Species(
     var family: String = "",
     var genus: String = "",
     var commonName: String = "",
-    var populationTrend: String = ""
+    var populationTrend: String = "",
+    var watching: Boolean = false,
+    var webLink: String = ""
 ) {
     lateinit var images: ToMany<SpeciesImage>
     lateinit var countries: ToMany<Country>
