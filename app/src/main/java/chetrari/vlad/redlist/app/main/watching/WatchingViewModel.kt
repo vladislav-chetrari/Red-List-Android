@@ -1,6 +1,5 @@
 package chetrari.vlad.redlist.app.main.watching
 
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import androidx.paging.PagedList
@@ -15,16 +14,9 @@ class WatchingViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val updateOption = MutableLiveData<UpdateOption<List<Species>>>(UpdateOption.None)
-    private val composite = MediatorLiveData<Composite>().apply {
-        addSource(updateOption) { postValue(Composite(updateOption = it)) }
-    }
-    val species = composite.switchMap { repository.watchingSpeciesPaged(context, listConfig, it.updateOption) }
+    val species = updateOption.switchMap { repository.watchingSpeciesPaged(context, listConfig, it) }
 
     fun onRefresh() = updateOption.postValue(UpdateOption.Immediate)
-
-    private inner class Composite(
-        val updateOption: UpdateOption<List<Species>> = this.updateOption.value!!
-    )
 
     private companion object {
         val listConfig: PagedList.Config = PagedList.Config.Builder()

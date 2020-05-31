@@ -10,7 +10,18 @@ import javax.inject.Singleton
 @Singleton
 class WatchingSpeciesDataUpdater @Inject constructor(
     private val box: Box<Species>,
-    private val byIdDataUpdater: SpeciesDetailsByIdDataUpdater
+    private val detailsByIdDataUpdater: SpeciesDetailsByIdDataUpdater,
+//    private val imageDataUpdater: SpeciesImageDataUpdater,
+    private val narrativeByIdDataUpdater: SpeciesNarrativeByIdDataUpdater,
+    private val speciesWebLinkUpdater: SpeciesWebLinkUpdater
 ) {
-    suspend operator fun invoke() = box.query { equal(Species_.watching, true) }.findIds().forEach { byIdDataUpdater(it) }
+    suspend operator fun invoke() {
+        for (id in box.query { equal(Species_.watching, true) }.findIds()) {
+            detailsByIdDataUpdater(id)
+//FIXME (impacts exec time)            imageDataUpdater(id)
+            narrativeByIdDataUpdater(id)
+            val scientificName = box[id]?.scientificName ?: continue
+            speciesWebLinkUpdater(scientificName)
+        }
+    }
 }

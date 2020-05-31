@@ -27,8 +27,13 @@ class CountriesFragment : BaseFragment(R.layout.fragment_list) {
 
     override fun observeLiveData() = viewModel.countries.observeEvent(
         onProgress = { refreshLayout.isRefreshing = it },
-        onError = { container.errorSnackbar(retryAction = viewModel::onRefresh) },
+        onError = ::showError,
         onSuccess = adapter::submitList
+    )
+
+    private fun showError(throwable: Throwable) = container.errorSnackbar(
+        message = throwable.message ?: getString(R.string.message_error),
+        retryAction = viewModel::onRefresh
     )
 
     private fun onCountrySelected(country: Country) = findNavController()

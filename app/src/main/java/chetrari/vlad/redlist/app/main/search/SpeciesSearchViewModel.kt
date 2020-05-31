@@ -18,7 +18,7 @@ class SpeciesSearchViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val countries = MutableLiveData(countryRepository.all)
-    private val searchQuery = MutableLiveData(SpeciesRepository.Query())
+    private val searchQuery = MutableLiveData<SpeciesRepository.Query>()
     val vulnerabilityTypes = mutableLiveData(Vulnerability.values().toList().filter { it != Vulnerability.NE })
     val countryNames = countries.map { it.map(Country::name) }
     val species = searchQuery.switchMap { speciesRepository.byQueryPaged(context, listConfig, UpdateOption.Immediate, it) }

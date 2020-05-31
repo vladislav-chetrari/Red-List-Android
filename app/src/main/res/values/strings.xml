@@ -6,6 +6,7 @@
     <string name="message_error">Oops!\nSomething went wrong!</string>
     <string name="retry">Retry</string>
     <string name="species_list">Species list</string>
+    <string name="species_list_pattern">%s species list</string>
     <string name="species_details">Species Details</string>
     <string name="taxonomic_notes">Taxonomic Notes</string>
     <string name="justification">Justification</string>

@@ -25,16 +25,31 @@ class SpeciesListFragment : BaseFragment(R.layout.fragment_list) {
         list.adapter = adapter
         doOnDestroy { list.adapter = null }
         refreshLayout.setOnRefreshListener(viewModel::onRefresh)
-        args.country?.let(viewModel::onFilter)
-        args.vulnerability?.let(viewModel::onFilter)
+        args.country?.let {
+            setToolbarTitle(it.name)
+            viewModel.onFilter(it)
+        }
+        args.vulnerability?.let {
+            setToolbarTitle(getString(it.stringResId))
+            viewModel.onFilter(it)
+        }
     }
 
     override fun observeLiveData() = viewModel.species.observeEvent(
         onProgress = { refreshLayout.isRefreshing = it },
-        onError = { refreshLayout.errorSnackbar(retryAction = viewModel::onRefresh) },
+        onError = ::showError,
         onSuccess = adapter::submitList
+    )
+
+    private fun showError(throwable: Throwable) = container.errorSnackbar(
+        message = throwable.message ?: getString(R.string.message_error),
+        retryAction = viewModel::onRefresh
     )
 
     private fun onSpeciesSelected(species: Species) = findNavController()
         .navigate(actionSpeciesListFragmentToSpeciesFragment(species.id))
+
+    private fun setToolbarTitle(speciesType: String) {
+        toolbar.title = getString(R.string.species_list_pattern, speciesType)
+    }
 }

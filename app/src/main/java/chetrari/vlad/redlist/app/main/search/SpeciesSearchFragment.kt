@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.core.view.minusAssign
@@ -74,6 +75,15 @@ class SpeciesSearchFragment : BaseFragment(R.layout.fragment_species_search) {
             }
             adapter.remove(selectedItem)
             setText("")
+        }
+        setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                onConfirmSearchPressed()
+                confirm.performClick()
+            } else if (actionId == EditorInfo.IME_ACTION_NEXT && v == addCountry) {
+                addVulnerability.requestFocus()
+            }
+            true
         }
         doOnDestroy { setAdapter(null) }
     }
