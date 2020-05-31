@@ -18,6 +18,7 @@ import kotlin.coroutines.CoroutineContext
 @Singleton
 class SpeciesRepository @Inject constructor(
     private val box: Box<Species>,
+    errorMapper: RepositoryErrorMapper,
     private val byCountryDataUpdater: SpeciesByCountryDataUpdater,
     private val detailsByIdDataUpdater: SpeciesDetailsByIdDataUpdater,
     private val narrativeByIdDataUpdater: SpeciesNarrativeByIdDataUpdater,
@@ -25,7 +26,7 @@ class SpeciesRepository @Inject constructor(
     private val byVulnerabilityDataUpdater: SpeciesByVulnerabilityDataUpdater,
     private val watchingSpeciesDataUpdater: WatchingSpeciesDataUpdater,
     private val speciesWebLinkUpdater: SpeciesWebLinkUpdater
-) : LiveRepository<Species>(box) {
+) : LiveRepository<Species>(box, errorMapper) {
 
     override val idProperty: Property<Species> = Species_.id
     override val defaultOrderByProperty: Property<Species> = Species_.scientificName
@@ -33,7 +34,7 @@ class SpeciesRepository @Inject constructor(
     fun watchingSpeciesPaged(
         context: CoroutineContext,
         config: PagedList.Config,
-        updateOption: UpdateOption<List<Species>> = UpdateOption.Condition { false }
+        updateOption: UpdateOption<List<Species>>
     ) = byParamsPaged(context, config, updateOption, byWatching())
 
     fun byCountryPaged(
@@ -65,10 +66,10 @@ class SpeciesRepository @Inject constructor(
         query: Query
     ) = byParamsPaged(
         context, config, updateOption,
-        Param<Nothing> { order(defaultOrderByProperty) },
-        byName(query.speciesName),
+        Param(Unit) { order(defaultOrderByProperty) },
         byCountries(query.countries),
-        byVulnerability(query.vulnerability)
+        byVulnerability(query.vulnerability),
+        byName(query.speciesName)
     )
 
     fun toggleWatching(species: Species) {
@@ -105,9 +106,9 @@ class SpeciesRepository @Inject constructor(
         else this
     }
 
-    private fun byWatching() = Param<Nothing>(
-        updater = { watchingSpeciesDataUpdater() }
-    ) { equal(Species_.watching, true).order(Species_.commonName) }
+    private fun byWatching() = Param(Unit, updater = { watchingSpeciesDataUpdater() }) {
+        equal(Species_.watching, true).order(Species_.commonName)
+    }
 
     data class Query(
         val speciesName: String = "",

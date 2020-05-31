@@ -16,7 +16,10 @@ import io.objectbox.kotlin.query
 import io.objectbox.query.QueryBuilder
 import kotlin.coroutines.CoroutineContext
 
-abstract class LiveRepository<T>(private val box: Box<T>) {
+abstract class LiveRepository<T>(
+    private val box: Box<T>,
+    private val errorMapper: RepositoryErrorMapper
+) {
 
     protected abstract val defaultOrderByProperty: Property<T>
     protected abstract val idProperty: Property<T>
@@ -68,11 +71,8 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
         context = context, config = config, updateOption = updateOption,
         updateFunction = { params.forEach { it.update() } },
         queryBuilder = {
-            val blocks = params.map { it.queryBuilder }
             var builder = this
-            if (params.isNotEmpty()) {
-                blocks.forEach { builder = it(builder) }
-            }
+            params.map { it.queryBuilder }.forEach { builder = it(builder) }
             builder
         })
 
@@ -151,15 +151,15 @@ abstract class LiveRepository<T>(private val box: Box<T>) {
         try {
             block()
         } catch (t: Throwable) {
-            emit(Event.Error(t))
+            emit(Event.Error(errorMapper.map(t)))
         }
     }
 
     protected open inner class Param<O>(
-        private val obj: O? = null,
+        private val obj: O,
         private val updater: suspend (O) -> Unit = {},
         val queryBuilder: QueryBuilder<T>.() -> QueryBuilder<T>
     ) {
-        val update: suspend () -> Unit = { obj?.let { updater(it) } }
+        val update: suspend () -> Unit = { updater(obj) }
     }
 }

@@ -12,8 +12,9 @@ import javax.inject.Singleton
 @Singleton
 class CountryRepository @Inject constructor(
     box: Box<Country>,
+    errorMapper: RepositoryErrorMapper,
     private val countryDataUpdater: CountryListDataUpdater
-) : LiveRepository<Country>(box) {
+) : LiveRepository<Country>(box, errorMapper) {
 
     override val idProperty: Property<Country> = Country_.id
     override val defaultOrderByProperty: Property<Country> = Country_.name
