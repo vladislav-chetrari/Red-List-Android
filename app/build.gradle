@@ -70,13 +70,14 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.2'
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+    implementation 'org.jsoup:jsoup:1.13.1'
 
     //debug utils
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanary"
     implementation "com.jakewharton.timber:timber:$timber"
 
     //ui
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation "io.coil-kt:coil:0.11.0"
     implementation 'com.otaliastudios:zoomlayout:1.7.1'
 
     testImplementation 'junit:junit:4.12'

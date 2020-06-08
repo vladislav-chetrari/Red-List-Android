@@ -1,18 +1,8 @@
 package chetrari.vlad.redlist.app
 
-import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.Intent.*
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
-import java.io.File
 
 object Intents {
 
@@ -23,7 +13,7 @@ object Intents {
     }
 
     //FIXME (without permissions, save to images or get uri from picasso somehow)
-    fun shareImageUrl(
+    /*fun shareImageUrl(
         context: Context,
         url: String,
         onError: (Throwable?) -> Unit = {},
@@ -54,13 +44,13 @@ object Intents {
                     return
                 }
                 val intent = Intent(ACTION_SEND).apply {
-                    type = "image/*"
+                    type = "image\/\*"
                     putExtra(EXTRA_STREAM, uri)
                 }
                 onIntentReady(intent)
             }
         })
-    }
+    }*/
 
     fun webUrl(url: String) = Intent(ACTION_VIEW).apply {
         data = Uri.parse(url)

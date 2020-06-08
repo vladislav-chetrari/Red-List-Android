@@ -6,6 +6,7 @@ import chetrari.vlad.redlist.base.Event
 import chetrari.vlad.redlist.data.persistence.model.Species
 import chetrari.vlad.redlist.data.persistence.repository.SpeciesRepository
 import chetrari.vlad.redlist.data.persistence.repository.UpdateOption
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SpeciesViewModel @Inject constructor(
@@ -21,7 +22,6 @@ class SpeciesViewModel @Inject constructor(
         addSource(speciesId) { postValue(Composite(speciesId = it)) }
     }
     val species = composite.switchMap { speciesMapper(it.updateOption, it.speciesId) }
-    private val loadedSpecies = species.map { if (it is Event.Success) it.result else null }
 
     fun onSpeciesIdReceived(id: Long) = speciesId.postValue(id)
 
@@ -40,6 +40,13 @@ class SpeciesViewModel @Inject constructor(
             }
         }
     })
+
+    fun onSpeciesHtmlReceive(html: String) {
+        val speciesId = (species.value as Event.Success).result.id
+        viewModelScope.launch {
+            repository.updateImagesFromHtml(context, speciesId, html)
+        }
+    }
 
     private inner class Composite(
         val updateOption: UpdateOption<Species> = this.updateOption.value!!,

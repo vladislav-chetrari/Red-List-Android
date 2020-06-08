@@ -11,6 +11,7 @@ import io.objectbox.Box
 import io.objectbox.Property
 import io.objectbox.kotlin.inValues
 import io.objectbox.query.QueryBuilder.StringOrder.CASE_INSENSITIVE
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.CoroutineContext
@@ -77,9 +78,12 @@ class SpeciesRepository @Inject constructor(
         box.put(species)
     }
 
+    suspend fun updateImagesFromHtml(context: CoroutineContext, speciesId: Long, html: String) = withContext(context) {
+        imageDataUpdater(speciesId to html)
+    }
+
     override suspend fun updateById(id: Long) {
         detailsByIdDataUpdater(id)
-        imageDataUpdater(id)
         narrativeByIdDataUpdater(id)
         val scientificName = box[id]?.scientificName ?: return
         speciesWebLinkUpdater(scientificName)

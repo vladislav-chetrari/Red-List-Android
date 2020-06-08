@@ -10,6 +10,5 @@ import kotlinx.android.parcel.Parcelize
 data class SpeciesImage(
     @Id
     var id: Long = 0,
-    var thumbnail: String = "",
-    var fullSize: String = ""
+    var url: String = ""
 ) : Parcelable

@@ -1,10 +1,12 @@
 package chetrari.vlad.redlist.app.main.species.details
 
+import android.annotation.SuppressLint
 import android.graphics.Color.WHITE
 import android.os.Bundle
 import android.text.Spannable.SPAN_INCLUSIVE_EXCLUSIVE
 import android.text.SpannableString
 import android.view.View
+import android.webkit.WebView
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -79,11 +81,30 @@ class SpeciesFragment : BaseFragment(R.layout.fragment_species) {
     }
 
     private fun setupImages(species: Species) {
+        if (species.webLink.isBlank()) return
         val images = species.images
-        if (images.isNotEmpty()) toolbarImage.run {
-            load(images[0].fullSize)
-            setOnClickListener { openGallery(species.commonName, images) }
+        if (images.isEmpty()) {
+            webView.enableJS()
+            webView.loadUrl(species.webLink)
+        } else {
+            webView.enableJS(false)
+            toolbarImage.run {
+                load(images[0].url)
+                setOnClickListener { openGallery(species.commonName, images) }
+            }
         }
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun WebView.enableJS(enable: Boolean = true) {
+        if (!enable) {
+            stopLoading()
+        }
+        webViewClient = if (enable) SpeciesWebViewClient() else null
+        visibility = if (enable) View.INVISIBLE else View.GONE
+        settings.javaScriptEnabled = enable
+        if (enable) addJavascriptInterface(SpeciesJSInterface(viewModel::onSpeciesHtmlReceive), SpeciesJSInterface.NAME)
+        else removeJavascriptInterface(SpeciesJSInterface.NAME)
     }
 
     private fun setupNarrative(narrative: Narrative) = listOf(

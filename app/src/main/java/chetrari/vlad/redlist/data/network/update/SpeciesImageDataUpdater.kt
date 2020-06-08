@@ -1,46 +1,39 @@
 package chetrari.vlad.redlist.data.network.update
 
-import chetrari.vlad.redlist.data.network.api.GoogleCustomSearchApi
-import chetrari.vlad.redlist.data.network.model.ImageWithTitleResponse
 import chetrari.vlad.redlist.data.persistence.model.Species
 import chetrari.vlad.redlist.data.persistence.model.SpeciesImage
 import io.objectbox.Box
+import org.jsoup.Jsoup
 import javax.inject.Inject
 import javax.inject.Singleton
 
+typealias SpeciesIdHtmlPair = Pair<Long, String>
+
 @Singleton
 class SpeciesImageDataUpdater @Inject constructor(
-    private val api: GoogleCustomSearchApi,
     private val box: Box<Species>
-) : DataUpdater<Long, List<ImageWithTitleResponse>, List<SpeciesImage>>() {
+) : DataUpdater<SpeciesIdHtmlPair, List<String>, List<SpeciesImage>>() {
 
-    override suspend fun fetch(input: Long): List<ImageWithTitleResponse> {
-        val species = box[input]
-        val query = if (species.commonName.isNotBlank()) species.commonName else species.scientificName
-        return api.searchImages(query).body.items
-    }
+    override suspend fun fetch(input: SpeciesIdHtmlPair) = Jsoup.parse(input.second).body()
+        ?.getElementById("page")
+        ?.getElementById("content")
+        ?.getElementsByTag("main")?.firstOrNull()
+        ?.getElementById("redlist-js")
+        ?.getElementsByClass("page-species")?.firstOrNull()
+        ?.getElementsByTag("header")?.firstOrNull()
+        ?.getElementsByClass("layout-page layout-page--image")?.firstOrNull()
+        ?.getElementsByClass("layout-page--image__minor")?.firstOrNull()
+        ?.getElementsByClass("layout-container featherlight__gallery")?.firstOrNull()
+        ?.getElementsByTag("a")
+        ?.map { it.attr("href") }
+        ?: emptyList()
 
-    override suspend fun map(input: Long, response: List<ImageWithTitleResponse>): List<SpeciesImage> {
-        val species = box[input]
-        val commonName = species.commonName
-        val scientificName = species.scientificName
-        return response.asSequence()
-            .filter { it.title.isNotBlank() }
-            .filter { with(it.title) { commonName.isNotBlank() && contains(commonName, true) || contains(scientificName, true) } }
-            .map { it.image }
-            .map { (it.thumbnail.firstOrNull()?.src ?: "") to (it.fullSize.firstOrNull()?.src ?: "") }
-            .filter { it.first.isNotBlank() || it.second.isNotBlank() }
-            .map {
-                if (it.first.isBlank() && it.second.isNotBlank()) it.second to it.second
-                else if (it.first.isNotBlank() && it.second.isBlank()) it.first to it.first
-                else it
-            }
-            .map { SpeciesImage(thumbnail = it.first, fullSize = it.second) }
-            .toList()
-    }
+    override suspend fun map(input: SpeciesIdHtmlPair, response: List<String>) =
+        response.map { SpeciesImage(url = it) }
 
-    override suspend fun persist(input: Long, output: List<SpeciesImage>) {
-        val species = box[input]
+    override suspend fun persist(input: SpeciesIdHtmlPair, output: List<SpeciesImage>) {
+        if (output.isEmpty()) return
+        val species = box[input.first]
         species.images.clear()
         species.images.addAll(output)
         box.put(species)

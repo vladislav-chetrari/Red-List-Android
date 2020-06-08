@@ -18,7 +18,7 @@ class ImageGalleryAdapter(
     override fun instantiateItem(parent: ViewGroup, position: Int): View {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false)
         val image = data[position]
-        view.image.load(image.fullSize)
+        view.image.load(image.url)
         view.setOnClickListener { onImageClick() }
         parent.addView(view)
         return view

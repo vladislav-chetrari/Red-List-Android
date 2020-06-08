@@ -116,6 +116,13 @@
                     android:layout_height="wrap_content"
                     app:titleText="@string/conservation_actions" />
 
+                <WebView
+                    android:id="@+id/webView"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:visibility="invisible"
+                    tools:ignore="WebViewLayout" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

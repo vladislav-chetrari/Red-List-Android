@@ -46,7 +46,7 @@ class WatchingSpeciesListAdapter(
             scientificName.text = species.scientificName
             scientificName.marquee()
             vulnerability.text = vulnerabilityText(species.category)
-            species.images.firstOrNull()?.thumbnail?.let {
+            species.images.firstOrNull()?.url?.let {
                 image.load(it)
             }
             containerView.setOnClickListener { onSpeciesSelected(species) }

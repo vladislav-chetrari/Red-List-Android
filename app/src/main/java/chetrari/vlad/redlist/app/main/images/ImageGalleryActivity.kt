@@ -45,7 +45,7 @@ class ImageGalleryActivity : AppCompatActivity(R.layout.activity_image_gallery) 
     }
 
     private fun share() {
-        val imageUrl = args.images[pager.currentItem].fullSize
+        val imageUrl = args.images[pager.currentItem].url
         startActivity(Intent.createChooser(Intents.shareText(imageUrl), getString(R.string.share)))
     }
 
