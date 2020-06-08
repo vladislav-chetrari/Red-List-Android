@@ -6,7 +6,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserPreferences @Inject constructor(private val prefs: SharedPreferences) {
+class UserPreferences @Inject constructor(
+    private val prefs: SharedPreferences
+) {
 
     var isWelcomePassed: Boolean
         get() = prefs.getBoolean(IS_WELCOME_PASSED, false)
